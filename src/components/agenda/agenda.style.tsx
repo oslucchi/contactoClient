@@ -5,52 +5,61 @@ import { Dimensions } from "react-native";
 const width = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
-  cardsContainer: {
+  cardContainer: {
+    width: width - 20,
+    paddingLeft: 30,
+    flex: 1,
+    flexDirection: "column",
+    borderColor: "gray",
+    backgroundColor: "white",
+  },
+  dataContainer: {
     flex: 1,
     flexDirection: "row",
-    width: width - 50,
+    width: "90%",
     alignItems: "center",
     justifyContent: "center",
     zIndex: 1,
     textAlign: "center",
     borderRadius: 10,
     backgroundColor: "white",
+    paddingLeft: "2%",
   },
+
+  textContainer: {
+    width: "80%",
+  },
+
+  imgContainer: {
+    width: "20%",
+  },
+
   imgLogo: {
     width: 50,
     height: 50,
     marginLeft: 5,
     marginRight: 5,
   },
-  textContainer: {
-    width: "80%",
+  dateAndTopic: {
+    fontSize: SIZES.medium,
+    fontFamily: FONT.medium,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  imgContainer: {
-    width: "20%",
-  },
-  header: {
+  timeAndCompany: {
     alignItems: "center",
     marginTop: SIZES.small,
     fontSize: SIZES.small,
   },
-  headerTitle: {
-    marginTop: SIZES.small,
-    fontSize: SIZES.medium,
-    fontFamily: FONT.medium,
-    color: COLORS.primary,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  headerBtn: {
-    fontSize: SIZES.medium,
-    fontFamily: FONT.medium,
-    color: COLORS.gray,
+  participants: {
+    fontSize: SIZES.xSmall,
   },
   shadowProp: {
-    shadowOffset: { width: -2, height: 4 },
-    shadowColor: "#171717",
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    elevation: 3, // Android
+    shadowColor: "#444444", // IOS
+    shadowOffset: { height: 1, width: 0 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 10,
   },
 });
 

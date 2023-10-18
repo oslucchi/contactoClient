@@ -8,10 +8,9 @@ import * as icons from "../../../assets/icons/index";
 
 type Props = {
   event: Events;
-  handlePress: (idEvent: number) => void;
 };
 
-const UpcomingCard: React.FC<Props> = ({ event, handlePress }) => {
+const UpcomingCard: React.FC<Props> = ({ event }) => {
   let invitees: string = "";
   var separator: string = "";
 
@@ -40,31 +39,40 @@ const UpcomingCard: React.FC<Props> = ({ event, handlePress }) => {
       break;
   }
 
-  console.log(event?.idEvent, iconName);
+  const handlePress = (idEvent: number): void => {
+    console.log("pressed", event?.idEvent);
+  };
 
   return (
-    <TouchableOpacity style={[styles.cardsContainer, styles.shadowProp]}>
-      <View style={styles.textContainer}>
-        <Text numberOfLines={1} style={styles.headerTitle}>
-          {dayjs(event?.date).format("MM/DD")}
-          {" - "}
-          {event?.description}
-        </Text>
-        <Text numberOfLines={1} style={styles.header}>
-          {dayjs(event?.date).format("HH:mm")}
-          {" - "}
-          {dayjs(event?.date).add(event?.duration, "minute").format("HH:mm")}
-          {"   "}
-          {event?.company}
-        </Text>
-        {event.participants ? (
-          <Text numberOfLines={1}>{invitees}</Text>
-        ) : (
-          <Text numberOfLines={1} />
-        )}
-      </View>
-      <View style={styles.imgContainer}>
-        <Image source={iconName} style={styles.imgLogo} />
+    <TouchableOpacity
+      style={styles.cardContainer}
+      onPress={() => handlePress(event.idEvent)}
+    >
+      <View style={[styles.dataContainer, styles.shadowProp]}>
+        <View style={styles.textContainer}>
+          <Text numberOfLines={1} style={styles.dateAndTopic}>
+            {dayjs(event?.date).format("MM/DD")}
+            {" - "}
+            {event?.description}
+          </Text>
+          <Text numberOfLines={1} style={styles.timeAndCompany}>
+            {dayjs(event?.date).format("HH:mm")}
+            {" - "}
+            {dayjs(event?.date).add(event?.duration, "minute").format("HH:mm")}
+            {"   "}
+            {event?.company}
+          </Text>
+          {event.participants ? (
+            <Text numberOfLines={1} style={styles.participants}>
+              {invitees}
+            </Text>
+          ) : (
+            <Text numberOfLines={1} />
+          )}
+        </View>
+        <View style={styles.imgContainer}>
+          <Image source={iconName} style={styles.imgLogo} />
+        </View>
       </View>
     </TouchableOpacity>
   );
