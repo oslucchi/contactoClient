@@ -5,12 +5,15 @@ import dayjs from "dayjs";
 import styles from "./agenda.style";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import * as icons from "../../../assets/icons/index";
+import { useNavigation } from "@react-navigation/native";
 
 type Props = {
   event: Events;
 };
 
 const UpcomingCard: React.FC<Props> = ({ event }) => {
+  const navigation = useNavigation<any>();
+
   let invitees: string = "";
   var separator: string = "";
 
@@ -41,6 +44,7 @@ const UpcomingCard: React.FC<Props> = ({ event }) => {
 
   const handlePress = (idEvent: number): void => {
     console.log("pressed", event?.idEvent);
+    navigation.navigate("eventHandler");
   };
 
   return (

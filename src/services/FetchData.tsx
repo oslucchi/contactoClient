@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import axios, { AxiosError } from "axios";
-import { Events } from "../modules/Events";
 
 const FetchData = (method: string, endpoint: string, query: object) => {
-  const [data, setData] = useState<Events[]>([]);
+  const [data, setData] = useState<[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<unknown | AxiosError>();
   const language = "IT-it";

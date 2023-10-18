@@ -2,8 +2,10 @@ import React from "react";
 import UpcomingCard from "./UpcomingCard";
 import FetchData from "../../services/FetchData";
 import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { Events } from "../modules/Events";
 
 const Upcoming: React.FC = () => {
+  console.log("Upcoming");
   const { data, isLoading, error } = FetchData(
     "post",
     "restcall/agenda/schedule",
@@ -13,10 +15,6 @@ const Upcoming: React.FC = () => {
     }
   );
 
-  const handleEvent = (idEvent: number) => {
-    console.log("handleEvent called back on event " + idEvent);
-  };
-
   return (
     <View>
       {isLoading ? (
@@ -25,12 +23,8 @@ const Upcoming: React.FC = () => {
         <Text>Something went wrong</Text>
       ) : (
         <ScrollView style={{ paddingTop: 20 }}>
-          {data?.map((event) => (
-            <UpcomingCard
-              event={event}
-              key={event?.idEvent}
-              handlePress={handleEvent}
-            />
+          {data?.map((event: Events) => (
+            <UpcomingCard key={event?.idEvent} event={event} />
           ))}
         </ScrollView>
       )}
