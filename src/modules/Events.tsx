@@ -17,3 +17,18 @@ export type Events = {
 
   selected: boolean;
 };
+
+export var eventNull: Events = {
+  idEvent: 1,
+  idOwner: 1,
+  idCompany: 1,
+  idEventCategory: 1,
+  date: new Date(),
+  duration: 0,
+  description: "",
+  company: "",
+  iconName: "",
+  participants: [],
+  status: false,
+  selected: false,
+};

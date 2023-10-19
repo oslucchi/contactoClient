@@ -11,12 +11,9 @@ import {
 } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import * as Font from "expo-font";
-
 import Entypo from "@expo/vector-icons/Entypo";
-import APPLOGO from "../../../assets/images/index";
 import styles from "./agenda.style";
-import Upcoming from "./Upcoming";
-import { useNavigation } from "@react-navigation/native";
+import EventsUpcoming from "./EventsUpcoming";
 import * as SplashScreen from "expo-splash-screen";
 
 const Agenda = () => {
@@ -25,18 +22,14 @@ const Agenda = () => {
   useEffect(() => {
     async function prepare() {
       try {
-        // Pre-load fonts, make any API calls you need to do here
         await Font.loadAsync(Entypo.font);
-        // Artificially delay for two seconds to simulate a slow loading
-        // experience. Please remove this if you copy and paste the code!
-        // await new Promise((resolve) => setTimeout(resolve, 2000));
         await Font.loadAsync({
           "Montserrat-Italic": require("../../../assets/fonts/Montserrat-Italic.ttf"),
         });
+        console.log("The application is now ready");
       } catch (e) {
-        console.warn(e);
+        console.error("error while loading fonts", e);
       } finally {
-        // Tell the application to render
         setAppIsReady(true);
       }
     }
@@ -46,28 +39,22 @@ const Agenda = () => {
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
-      // This tells the splash screen to hide immediately! If we call this after
-      // `setAppIsReady`, then we may see a blank screen while the app is
-      // loading its initial state and rendering its first pixels. So instead,
-      // we hide the splash screen once we know the root view has already
-      // performed layout.
       await SplashScreen.hideAsync();
       console.log("Agenda");
     }
   }, [appIsReady]);
 
-  if (!appIsReady) {
-    console.log("app is not ready");
-    return null;
-  }
-
   return (
-    <View onLayout={onLayoutRootView} style={styles.appContainer}>
-      <Upcoming />
+    <View onLayout={onLayoutRootView}>
+      {!appIsReady ? (
+        <ActivityIndicator size="large" color="#312651" />
+      ) : (
+        <View style={styles.appContainer}>
+          <EventsUpcoming />
+        </View>
+      )}
     </View>
   );
-  //   <SafeAreaView  style={styles.safeArea}>
-  //   </SafeAreaView>
 };
 
 export default Agenda;

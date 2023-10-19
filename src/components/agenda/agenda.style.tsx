@@ -6,12 +6,21 @@ const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
+  scheduleContainer: {
+    position: "absolute",
+    top: 30,
+    left: 10,
+  },
+  upcomingCardsContainer: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    backgroundColor: "white",
+  },
   cardContainer: {
     width: width - 20,
     paddingLeft: 30,
     flex: 1,
     flexDirection: "column",
-    borderColor: "gray",
     backgroundColor: "white",
   },
   dataContainer: {
@@ -56,7 +65,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.xSmall,
   },
   shadowProp: {
-    elevation: 3, // Android
+    elevation: 10, // Android
     shadowColor: "#444444", // IOS
     shadowOffset: { height: 1, width: 0 }, // IOS
     shadowOpacity: 1, // IOS

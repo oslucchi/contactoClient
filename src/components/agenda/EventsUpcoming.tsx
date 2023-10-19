@@ -1,11 +1,15 @@
 import React from "react";
-import UpcomingCard from "./UpcomingCard";
+import EventCard from "./EventCard";
 import FetchData from "../../services/FetchData";
 import { ActivityIndicator, ScrollView, Text, View } from "react-native";
-import { Events } from "../modules/Events";
+import { Events } from "../../modules/Events";
+import styles from "./agenda.style";
 
-const Upcoming: React.FC = () => {
-  console.log("Upcoming");
+type Props = {};
+
+const EventsUpcoming: React.FC<Props> = () => {
+  console.log("EventsUpcoming");
+
   const { data, isLoading, error } = FetchData(
     "post",
     "restcall/agenda/schedule",
@@ -16,15 +20,15 @@ const Upcoming: React.FC = () => {
   );
 
   return (
-    <View>
+    <View style={styles.scheduleContainer}>
       {isLoading ? (
         <ActivityIndicator size="large" color="#312651" />
       ) : error ? (
         <Text>Something went wrong</Text>
       ) : (
-        <ScrollView style={{ paddingTop: 20 }}>
+        <ScrollView style={styles.upcomingCardsContainer}>
           {data?.map((event: Events) => (
-            <UpcomingCard key={event?.idEvent} event={event} />
+            <EventCard key={event?.idEvent} event={event} />
           ))}
         </ScrollView>
       )}
@@ -32,4 +36,4 @@ const Upcoming: React.FC = () => {
   );
 };
 
-export default Upcoming;
+export default EventsUpcoming;

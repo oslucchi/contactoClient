@@ -4,26 +4,28 @@ import {
   Button,
   StyleSheet,
   Dimensions,
-  ScrollView,
   ActivityIndicator,
 } from "react-native";
-import React from "react";
-import { useNavigation } from "@react-navigation/native";
-import { BaseButton } from "react-native-gesture-handler";
-import FetchData from "../services/FetchData";
-import { Reports } from "../modules/Reports";
-import dayjs from "dayjs";
-import ReportItem from "./ReportItem";
+import FetchData from "../../services/FetchData";
+import ReportSection from "../repo/ReportSection";
+import { Events } from "../../modules/Events";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { ParamList } from "../../../App";
 
-const EventHandler = () => {
+const EventActionHandler = () => {
+  console.log("EventActionHandler");
   const navigation = useNavigation();
-  console.log("EventHandler");
+
+  const route = useRoute<RouteProp<ParamList, "EventActionHandler">>();
+  const event: Events = route.params.event;
+
+  console.debug("event passed ", event);
 
   const { data, isLoading, error } = FetchData(
     "post",
     "restcall/agenda/getReports",
     {
-      idCompany: 1,
+      idCompany: event.idCompany,
     }
   );
 
@@ -35,14 +37,7 @@ const EventHandler = () => {
         <Text>Something went wrong</Text>
       ) : (
         <View>
-          <Text style={{ fontSize: 24, justifyContent: "flex-start" }}>
-            Report
-          </Text>
-          <ScrollView style={styles.repo}>
-            {data?.map((report: Reports) => (
-              <ReportItem key={report?.idReport} report={report} />
-            ))}
-          </ScrollView>
+          <ReportSection event={event} />
           <View
             style={[
               styles.footer,
@@ -71,16 +66,16 @@ const height = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    width: width - 6,
-    height: height,
-    paddingTop: 40,
-    paddingLeft: 10,
-    paddingRight: 10,
     flexDirection: "column",
     backgroundColor: "white",
   },
   repo: {
-    flex: 5,
+    width: width - 20,
+    height: 150,
+    position: "relative",
+    top: 50,
+    left: 10,
+
     paddingLeft: 5,
     paddingRight: 5,
     paddingtop: 20,
@@ -92,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EventHandler;
+export default EventActionHandler;

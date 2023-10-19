@@ -5,14 +5,17 @@ import dayjs from "dayjs";
 import styles from "./agenda.style";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import * as icons from "../../../assets/icons/index";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { ParamList } from "../../../App";
 
 type Props = {
   event: Events;
 };
 
-const UpcomingCard: React.FC<Props> = ({ event }) => {
-  const navigation = useNavigation<any>();
+const EventCard: React.FC<Props> = ({ event }) => {
+  const navigation = useNavigation<NavigationProp<ParamList>>();
+
+  console.log("EventCard");
 
   let invitees: string = "";
   var separator: string = "";
@@ -42,15 +45,20 @@ const UpcomingCard: React.FC<Props> = ({ event }) => {
       break;
   }
 
-  const handlePress = (idEvent: number): void => {
-    console.log("pressed", event?.idEvent);
-    navigation.navigate("eventHandler");
+  const handlePress = (event: Events): void => {
+    console.log(
+      "Calling EventActionHandler passing event with id ",
+      event?.idEvent
+    );
+    navigation.navigate("EventActionHandler", { event });
   };
+
+  console.log("event ", event);
 
   return (
     <TouchableOpacity
       style={styles.cardContainer}
-      onPress={() => handlePress(event.idEvent)}
+      onPress={() => handlePress(event)}
     >
       <View style={[styles.dataContainer, styles.shadowProp]}>
         <View style={styles.textContainer}>
@@ -82,4 +90,4 @@ const UpcomingCard: React.FC<Props> = ({ event }) => {
   );
 };
 
-export default UpcomingCard;
+export default EventCard;

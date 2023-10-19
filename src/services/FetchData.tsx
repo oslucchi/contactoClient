@@ -23,7 +23,6 @@ const FetchData = (method: string, endpoint: string, query: object) => {
     try {
       const response = await axios.request(options);
       setData(response.data);
-      setIsLoading(false);
     } catch (error) {
       setError(error);
       console.log(error);
