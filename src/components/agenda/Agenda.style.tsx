@@ -1,47 +1,47 @@
-import { StyleSheet } from "react-native";
-import { COLORS, SIZES, FONT } from "../../constants/theme";
-import { Dimensions } from "react-native";
+import {StyleSheet} from 'react-native';
+import {SIZES, FONT} from '../../constants/theme';
+import {Dimensions} from 'react-native';
 
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   scheduleContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 30,
     left: 10,
   },
   upcomingCardsContainer: {
     paddingTop: 20,
     paddingBottom: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   cardContainer: {
     width: width - 20,
     paddingLeft: 30,
     flex: 1,
-    flexDirection: "column",
-    backgroundColor: "white",
+    flexDirection: 'column',
+    backgroundColor: 'white',
   },
   dataContainer: {
     flex: 1,
-    flexDirection: "row",
-    width: "90%",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    width: '90%',
+    alignItems: 'center',
+    justifyContent: 'center',
     zIndex: 1,
-    textAlign: "center",
+    textAlign: 'center',
     borderRadius: 10,
-    backgroundColor: "white",
-    paddingLeft: "2%",
+    backgroundColor: 'white',
+    paddingLeft: '2%',
   },
 
   textContainer: {
-    width: "80%",
+    width: '80%',
   },
 
   imgContainer: {
-    width: "20%",
+    width: '20%',
   },
 
   imgLogo: {
@@ -53,11 +53,11 @@ const styles = StyleSheet.create({
   dateAndTopic: {
     fontSize: SIZES.medium,
     fontFamily: FONT.medium,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   timeAndCompany: {
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: SIZES.small,
     fontSize: SIZES.small,
   },
@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
   },
   shadowProp: {
     elevation: 10, // Android
-    shadowColor: "#444444", // IOS
-    shadowOffset: { height: 1, width: 0 }, // IOS
+    shadowColor: '#444444', // IOS
+    shadowOffset: {height: 1, width: 0}, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 10,
   },
@@ -81,18 +81,18 @@ const styles = StyleSheet.create({
     height: height,
     paddingTop: SIZES.medium,
     flex: 1,
-    alignItems: "center",
-    flexDirection: "column",
-    fontFamily: "Montserrat-Italic",
-    backgroundColor: "#FFFFFF",
+    alignItems: 'center',
+    flexDirection: 'column',
+    fontFamily: 'Montserrat-Italic',
+    backgroundColor: '#FFFFFF',
   },
   container: {
-    flexDirection: "column",
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'column',
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
     zIndex: 1,
-    textAlign: "center",
+    textAlign: 'center',
   },
   appLogo: {
     width: 150,

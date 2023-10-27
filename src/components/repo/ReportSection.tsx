@@ -1,41 +1,31 @@
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  ActivityIndicator,
-  Image,
-  StatusBar,
-} from "react-native";
-import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import FetchData from "../../services/FetchData";
-import { Reports } from "../../modules/Reports";
-import ReportItem from "./ReportItem";
-import styles from "./reports.style";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Events } from "../../modules/Events";
+import { View, Text, ScrollView, Image } from 'react-native';
+import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import FetchData from '../../services/FetchData';
+import { Reports } from '../../modules/Reports';
+import ReportItem from './ReportItem';
+import styles from './Reports.style';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Events } from '../../modules/Events';
 
 type Props = {
   event: Events;
 };
 
 const ReportSection: React.FC<Props> = ({ event }) => {
-  console.log("ReportSection");
+  console.log('ReportSection');
 
   const [showTagsOnly, setShowTagsOnly] = useState(true);
 
   const navigation = useNavigation<any>();
-  console.log("ReportSection");
+  console.log('ReportSection');
 
   const { data, isLoading, error } = FetchData(
-    "post",
-    "restcall/agenda/getReports",
+    'post',
+    'restcall/agenda/getReports',
     {
       idCompany: event.idCompany,
-    }
+    },
   );
 
   const toggleFullReportVisibilty = () => {
@@ -43,8 +33,8 @@ const ReportSection: React.FC<Props> = ({ event }) => {
   };
 
   const addReport = (idEvent: number, idUser: number) => {
-    console.log("adding report for ", idEvent, idUser);
-    navigation.navigate("ReportAddItem", { idEvent, idUser });
+    console.log('adding report for ', idEvent, idUser);
+    navigation.navigate('ReportAddItem', { idEvent, idUser });
   };
 
   return (
@@ -52,14 +42,14 @@ const ReportSection: React.FC<Props> = ({ event }) => {
       <View style={styles.header}>
         <TouchableOpacity onPress={toggleFullReportVisibilty}>
           <Image
-            source={require("../../../assets/icons/details.png")}
+            source={require('../../../assets/icons/details.png')}
             style={styles.iconContainer}
           />
         </TouchableOpacity>
         <Text style={{ fontSize: 35 }}>Reports</Text>
         <TouchableOpacity onPress={() => addReport(event.idEvent, 1)}>
           <Image
-            source={require("../../../assets/icons/add.png")}
+            source={require('../../../assets/icons/add.png')}
             style={styles.iconContainer}
           />
         </TouchableOpacity>

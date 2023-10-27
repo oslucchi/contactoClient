@@ -5,29 +5,25 @@ import {
   StyleSheet,
   Dimensions,
   ActivityIndicator,
-} from "react-native";
-import FetchData from "../../services/FetchData";
-import ReportSection from "../repo/ReportSection";
-import { Events } from "../../modules/Events";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { ParamList } from "../../../App";
+} from 'react-native';
+import FetchData from '../../services/FetchData';
+import ReportSection from '../repo/ReportSection';
+import {Events} from '../../modules/Events';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {ParamList} from '../../../App';
 
 const EventActionHandler = () => {
-  console.log("EventActionHandler");
+  console.log('EventActionHandler');
   const navigation = useNavigation();
 
-  const route = useRoute<RouteProp<ParamList, "EventActionHandler">>();
+  const route = useRoute<RouteProp<ParamList, 'EventActionHandler'>>();
   const event: Events = route.params.event;
 
-  console.debug("event passed ", event);
+  console.debug('event passed ', event);
 
-  const { data, isLoading, error } = FetchData(
-    "post",
-    "restcall/agenda/getReports",
-    {
-      idCompany: event.idCompany,
-    }
-  );
+  const {isLoading, error} = FetchData('post', 'restcall/agenda/getReports', {
+    idCompany: event.idCompany,
+  });
 
   return (
     <View style={styles.mainContainer}>
@@ -44,11 +40,10 @@ const EventActionHandler = () => {
               {
                 width: 200,
                 height: 50,
-                alignItems: "center",
-                alignSelf: "center",
+                alignItems: 'center',
+                alignSelf: 'center',
               },
-            ]}
-          >
+            ]}>
             <Button
               title="BACK"
               color="#312651"
@@ -61,29 +56,28 @@ const EventActionHandler = () => {
   );
 };
 
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
+const width = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    flexDirection: "column",
-    backgroundColor: "white",
+    flexDirection: 'column',
+    backgroundColor: 'white',
   },
   repo: {
     width: width - 20,
     height: 150,
-    position: "relative",
+    position: 'relative',
     top: 50,
     left: 10,
 
     paddingLeft: 5,
     paddingRight: 5,
     paddingtop: 20,
-    backgroundColor: "#DCF8C6",
+    backgroundColor: '#DCF8C6',
   },
   footer: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
 });
 

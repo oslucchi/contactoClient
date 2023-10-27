@@ -1,30 +1,28 @@
-import { createStackNavigator } from "@react-navigation/stack";
-import {
-  NavigationContainer,
-  DefaultTheme,
-  useNavigation,
-} from "@react-navigation/native";
-import EventActionHandler from "./src/components/agenda/EventActionsHandler";
-import Agenda from "./src/components/agenda/Agenda";
-import TitleBar from "./src/components/TitleBar";
-import ReportAddItem from "./src/components/repo/ReportAddItem";
-import { Events, eventNull } from "./src/modules/Events";
-import { useState } from "react";
+import React from 'react';
+
+import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
+import EventActionHandler from './src/components/agenda/EventActionsHandler';
+import Agenda from './src/components/agenda/Agenda';
+import TitleBar from './src/components/TitleBar';
+import ReportAddItem from './src/components/repo/ReportAddItem';
+import {Events} from './src/modules/Events';
 
 const Stack = createStackNavigator();
+
 const contactoTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "black",
-    background: "white",
+    primary: 'black',
+    background: 'white',
   },
 };
 
 export type ParamList = {
-  EventActionHandler: { event: Events };
+  EventActionHandler: {event: Events};
   Agenda: undefined;
-  ReportAddItem: { idEvent: number; idUser: number };
+  ReportAddItem: {idEvent: number; idUser: number};
 };
 
 export default function App() {
@@ -32,17 +30,16 @@ export default function App() {
     <NavigationContainer theme={contactoTheme}>
       <Stack.Navigator
         initialRouteName="agenda"
-        screenOptions={{ headerLeft: () => null }}
-      >
+        screenOptions={{headerLeft: () => null}}>
         <Stack.Screen
           name="Agenda"
-          options={{ headerTitle: () => <TitleBar functionName={"Agenda"} /> }}
+          options={{headerTitle: () => <TitleBar functionName={'Agenda'} />}}
           component={Agenda}
         />
 
         <Stack.Screen
           name="EventActionHandler"
-          options={{ headerTitle: () => <TitleBar functionName={"Azioni"} /> }}
+          options={{headerTitle: () => <TitleBar functionName={'Azioni'} />}}
           component={EventActionHandler}
         />
 
@@ -50,7 +47,7 @@ export default function App() {
           name="ReportAddItem"
           component={ReportAddItem}
           options={{
-            headerTitle: () => <TitleBar functionName={"Azioni"} />,
+            headerTitle: () => <TitleBar functionName={'Azioni'} />,
           }}
         />
       </Stack.Navigator>

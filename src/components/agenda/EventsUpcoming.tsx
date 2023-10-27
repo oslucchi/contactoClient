@@ -1,22 +1,22 @@
-import React from "react";
-import EventCard from "./EventCard";
-import FetchData from "../../services/FetchData";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
-import { Events } from "../../modules/Events";
-import styles from "./agenda.style";
+import React from 'react';
+import EventCard from './EventCard';
+import FetchData from '../../services/FetchData';
+import {ActivityIndicator, ScrollView, Text, View} from 'react-native';
+import {Events} from '../../modules/Events';
+import styles from './Agenda.style';
 
 type Props = {};
 
 const EventsUpcoming: React.FC<Props> = () => {
-  console.log("EventsUpcoming");
+  console.log('EventsUpcoming');
 
-  const { data, isLoading, error } = FetchData(
-    "post",
-    "restcall/agenda/schedule",
+  const {data, isLoading, error} = FetchData(
+    'post',
+    'restcall/agenda/schedule',
     {
       numOfFutureItems: 5,
       idOwner: 1,
-    }
+    },
   );
 
   return (

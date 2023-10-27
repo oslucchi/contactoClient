@@ -1,9 +1,9 @@
-import { View, Text } from "react-native";
-import React from "react";
-import { Reports } from "../../modules/Reports";
-import dayjs from "dayjs";
+import { View, Text } from 'react-native';
+import React from 'react';
+import { Reports } from '../../modules/Reports';
+import dayjs from 'dayjs';
 
-import styles from "./reports.style";
+import styles from './Reports.style';
 
 type Props = {
   report: Reports;
@@ -11,11 +11,11 @@ type Props = {
 };
 
 const ReportItem: React.FC<Props> = ({ report, showTagsOnly }) => {
-  console.log("ReportItem");
+  console.log('ReportItem');
   return (
     <View style={styles.reportItem}>
-      <Text style={{ fontStyle: "italic", fontSize: 18 }}>
-        {dayjs(report?.date).format("YYYY/MM/DD")} {" - "}
+      <Text style={{ fontStyle: 'italic', fontSize: 18 }}>
+        {dayjs(report?.date).format('YYYY/MM/DD')} {' - '}
         {report.reporter}
       </Text>
       {showTagsOnly ? (
