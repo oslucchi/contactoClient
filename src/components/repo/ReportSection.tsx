@@ -7,6 +7,7 @@ import ReportItem from './ReportItem';
 import styles from './Reports.style';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Events } from '../../modules/Events';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 type Props = {
   event: Events;
@@ -48,10 +49,7 @@ const ReportSection: React.FC<Props> = ({ event }) => {
         </TouchableOpacity>
         <Text style={{ fontSize: 35 }}>Reports</Text>
         <TouchableOpacity onPress={() => addReport(event.idEvent, 1)}>
-          <Image
-            source={require('../../../assets/icons/add.png')}
-            style={styles.iconContainer}
-          />
+          <Icon name="pluscircleo" size={35} />
         </TouchableOpacity>
       </View>
       <View style={styles.reportsContainer}>
