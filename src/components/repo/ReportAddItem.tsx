@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Button, Text } from 'react-native';
+import { SafeAreaView, Button, Text, TouchableOpacity, Image, View } from 'react-native';
 import Voice, { SpeechResultsEvent } from '@react-native-voice/voice';
+import { TextInput } from 'react-native-gesture-handler';
+import styles from './Reports.style';
 
 const ReportAddItem = () => {
   console.log('ReportAddItem');
@@ -29,11 +31,19 @@ const ReportAddItem = () => {
     }
   };
 
+  const speechPartialResultsHandler = (e: SpeechResultsEvent) => {
+    console.log('Partial result' + JSON.stringify(e));
+    if (e.value) {
+      setRecordingResult(e.value[0]);
+    }
+  };
+
   useEffect(() => {
     // voice handler events
     Voice.onSpeechStart = speechStartHandler;
     Voice.onSpeechEnd = speechEndHandler;
     Voice.onSpeechResults = speechResultsHandler;
+    Voice.onSpeechPartialResults = speechPartialResultsHandler;
     Voice.onSpeechError = speechErrorHandler;
 
     return () => {
@@ -65,12 +75,44 @@ const ReportAddItem = () => {
 
   return (
     <SafeAreaView>
-      <Button title="Start" onPress={startSpeechToText} />
-      <Button title="Stop" onPress={stopSpeechToText} />
-      <Text>{recording ? 'Recording' : 'Not Recording'}</Text>
-      <Text>{recordingResult}</Text>
+      <TextInput
+        style={{backgroundColor: '#DCF8C6', height: '95%'}}
+        value={recordingResult}
+        multiline={true}
+      />
+      { recording ? (
+          <View style={[styles.iconContainer, {width: '100%', alignItems: 'center', backgroundColor: '#DCF8C6'}]}>
+            <TouchableOpacity              
+              onPress={stopSpeechToText} >
+              <Image
+                style={styles.iconContainer}
+                source={require('../../../assets/images/voiceLoading.gif')} />
+            </TouchableOpacity>
+          </View>
+        ):(
+          <View style={[styles.iconContainer, {width: '100%', alignItems: 'center', backgroundColor: '#DCF8C6'}]}>
+            <TouchableOpacity
+              onPress={startSpeechToText} >
+              <Image
+                style={styles.iconContainer}
+                source={require('../../../assets/images/startRecording.png')} />
+            </TouchableOpacity>
+          </View>
+        )}
     </SafeAreaView>
   );
 };
 
-export default ReportAddItem;
+export default ReportAddItem
+/*
+      <Button title="Start" onPress={startSpeechToText} />
+      <Button title="Stop" onPress={stopSpeechToText} />
+      <Text>{recording ? 'Recording' : 'Not Recording'}</Text>
+
+
+      <View style={{backgroundColor: '#DCF8C6', height: '95%'}}>
+        {recordingResult}
+      </View>
+
+
+      */
