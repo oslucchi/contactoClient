@@ -6,12 +6,13 @@ const height = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    paddingTop: 5,
-    height: height - 5,
+    height: '100%',
     backgroundColor: '#FFFFFF',
+    // borderWidth: 1,
+    // borderColor: 'red'
   },
   header: {
-    height: '8%',
+    height: '10%',
     width: '95%',
     alignSelf: 'center',
     backgroundColor: 'white',
@@ -20,23 +21,38 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     directions: 'inherit',
     flexWrap: 'nowrap',
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-  },
-  reportsContainer: {
-    maxHeight: '45%',
-    width: '95%',
-    alignSelf: 'center',
-    backgroundColor: '#DCF8C6',
+    // borderWidth: 1
   },
   footer: {
+    height: '10%',
+    width: '100%',
+    alignSelf: 'center',
+    backgroundColor: '#DCF8C6',
     flex: 1,
+    flexDirection: 'row',
     justifyContent: 'flex-end',
+    alignItems: 'flex-start',
+    directions: 'inherit',
+    flexWrap: 'nowrap',
+    // borderWidth: 
+    },
+  iconContainer: {
+    width: 60,
+    height: 60,
+  },
+  iconContainerSmall: {
+    width: 35,
+    height: 35,
+  },
+  reportsContainer: {
+    height: '80%',
+    width: '100%',
+    alignSelf: 'center',
+    backgroundColor: '#DCF8C6',
+    // borderWidth: 1
   },
   reportItem: {
-    width: '95%',
+    width: '100%',
   },
 });
 

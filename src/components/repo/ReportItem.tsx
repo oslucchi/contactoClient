@@ -1,30 +1,40 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Reports } from '../../modules/Reports';
 import dayjs from 'dayjs';
 
 import styles from './Reports.style';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type Props = {
   report: Reports;
-  showTagsOnly: boolean;
 };
 
-const ReportItem: React.FC<Props> = ({ report, showTagsOnly }) => {
+
+const ReportItem: React.FC<Props> = ({ report }) => {
   console.log('ReportItem');
+  const [reportText, setReportText] = useState(report.showTagOnly ? report?.summary : report?.report)
+
+  const toggleShowTagOnly= () => {
+    report.showTagOnly = !report.showTagOnly;
+    setReportText(report.showTagOnly ? report?.summary : report?.report);
+  }
+  useEffect(() => { 
+    console.log('rendering   trigged') 
+  }, [reportText]);
+
   return (
-    <View style={styles.reportItem}>
+    <TouchableOpacity onPress={toggleShowTagOnly}>
+    <View style={[styles.reportItem, {paddingBottom: 25}]} >
       <Text style={{ fontStyle: 'italic', fontSize: 18 }}>
         {dayjs(report?.date).format('YYYY/MM/DD')} {' - '}
         {report.reporter}
       </Text>
-      {showTagsOnly ? (
-        <Text style={{ fontSize: 12 }}>{report?.summary}</Text>
-      ) : (
-        <Text style={{ fontSize: 12 }}>{report?.report}</Text>
-      )}
-      <Text style={{ fontSize: 20 }}> </Text>
+      <Text style={{ fontSize: 16 }}>
+        {reportText}
+      </Text>
     </View>
+    </TouchableOpacity>
   );
 };
 

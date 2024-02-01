@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import FetchData from '../../services/FetchData';
 import { Reports } from '../../modules/Reports';
@@ -19,7 +19,6 @@ const ReportSection: React.FC<Props> = ({ event }) => {
   const [showTagsOnly, setShowTagsOnly] = useState(true);
 
   const navigation = useNavigation<any>();
-  console.log('ReportSection');
 
   const { data, isLoading, error } = FetchData(
     'post',
@@ -31,7 +30,14 @@ const ReportSection: React.FC<Props> = ({ event }) => {
 
   const toggleFullReportVisibilty = () => {
     setShowTagsOnly(!showTagsOnly);
+    data.forEach((item: Reports) => {
+      item.showTagOnly = showTagsOnly;
+    })
   };
+
+  useEffect(() => {
+    console.log('useEffect called. showTagsOnly is ' + showTagsOnly);
+  }, [showTagsOnly]);
 
   const addReport = (idEvent: number, idUser: number) => {
     console.log('adding report for ', idEvent, idUser);
@@ -44,7 +50,7 @@ const ReportSection: React.FC<Props> = ({ event }) => {
         <TouchableOpacity onPress={toggleFullReportVisibilty}>
           <Image
             source={require('../../../assets/icons/details.png')}
-            style={styles.iconContainer}
+            style={styles.iconContainerSmall}
           />
         </TouchableOpacity>
         <Text style={{ fontSize: 35 }}>Reports</Text>
@@ -52,16 +58,18 @@ const ReportSection: React.FC<Props> = ({ event }) => {
           <Icon name="pluscircleo" size={35} />
         </TouchableOpacity>
       </View>
-      <View style={styles.reportsContainer}>
+      <View style={[styles.reportsContainer]}>
         <ScrollView>
           {data?.map((report: Reports) => (
             <ReportItem
               key={report?.idReport}
               report={report}
-              showTagsOnly={showTagsOnly}
             />
           ))}
         </ScrollView>
+      </View>
+      <View style={styles.footer}>
+        <Text>{ }</Text>
       </View>
     </View>
   );

@@ -58,7 +58,8 @@ const ReportAddItem = () => {
     try {
       console.log('Starting Voice speech to text');
       await Voice.start('it-IT');
-    } catch (error) {
+    } 
+    catch (error) {
       console.log('Got error while starting', error);
     }
   };
@@ -68,20 +69,21 @@ const ReportAddItem = () => {
     try {
       console.log('Ending Voice');
       await Voice.stop();
-    } catch (error) {
+    } 
+    catch (error) {
       console.log('Got error while ending', error);
     }
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={[styles.reportsContainer, {backgroundColor: '#AAAAAA'}]}>
       <TextInput
-        style={{backgroundColor: '#DCF8C6', height: '95%'}}
+        style={[styles.reportItem, {backgroundColor: '#DCF8C6'}]}
         value={recordingResult}
         multiline={true}
       />
       { recording ? (
-          <View style={[styles.iconContainer, {width: '100%', alignItems: 'center', backgroundColor: '#DCF8C6'}]}>
+          <View style={[styles.iconContainer, {width: '100%', height: '10%', alignItems: 'center', backgroundColor: '#DCF8C6'}]}>
             <TouchableOpacity              
               onPress={stopSpeechToText} >
               <Image
@@ -90,7 +92,7 @@ const ReportAddItem = () => {
             </TouchableOpacity>
           </View>
         ):(
-          <View style={[styles.iconContainer, {width: '100%', alignItems: 'center', backgroundColor: '#DCF8C6'}]}>
+          <View style={[styles.iconContainer, {width: '100%', height: '10%', alignItems: 'center', backgroundColor: '#DCF8C6'}]}>
             <TouchableOpacity
               onPress={startSpeechToText} >
               <Image
