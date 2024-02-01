@@ -13,15 +13,13 @@ type Props = {
 
 const ReportItem: React.FC<Props> = ({ report }) => {
   console.log('ReportItem');
-  const [reportText, setReportText] = useState(report.showTagOnly ? report?.summary : report?.report)
+  const [showTagOnly, setShowTagOnly] = useState(report.showTagOnly)
 
   const toggleShowTagOnly= () => {
+    console.log('showTagOnly for object was ' + report.showTagOnly); 
     report.showTagOnly = !report.showTagOnly;
-    setReportText(report.showTagOnly ? report?.summary : report?.report);
+    setShowTagOnly(report.showTagOnly);
   }
-  useEffect(() => { 
-    console.log('rendering   trigged') 
-  }, [reportText]);
 
   return (
     <TouchableOpacity onPress={toggleShowTagOnly}>
@@ -30,9 +28,11 @@ const ReportItem: React.FC<Props> = ({ report }) => {
         {dayjs(report?.date).format('YYYY/MM/DD')} {' - '}
         {report.reporter}
       </Text>
-      <Text style={{ fontSize: 16 }}>
-        {reportText}
-      </Text>
+      {report.showTagOnly ? (
+        <Text style={{ fontSize: 12 }}>{report?.summary}</Text>
+      ) : (
+        <Text style={{ fontSize: 12 }}>{report?.report}</Text>
+      )}
     </View>
     </TouchableOpacity>
   );

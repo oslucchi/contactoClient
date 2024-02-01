@@ -29,11 +29,14 @@ const ReportSection: React.FC<Props> = ({ event }) => {
   );
 
   const toggleFullReportVisibilty = () => {
-    setShowTagsOnly(!showTagsOnly);
-    data.forEach((item: Reports) => {
-      item.showTagOnly = showTagsOnly;
-    })
-  };
+    for(var count = 0; count < data.length; count++)
+    {
+      console.log('id ' + (data[count] as Reports).idReport + ' showTagOnly ' + (data[count] as Reports).showTagOnly );
+      (data[count] as Reports).showTagOnly = !showTagsOnly;
+      console.log('id ' + (data[count] as Reports).idReport + ' showTagOnly ' + (data[count] as Reports).showTagOnly );
+    }
+     setShowTagsOnly(!showTagsOnly);
+    };
 
   useEffect(() => {
     console.log('useEffect called. showTagsOnly is ' + showTagsOnly);
