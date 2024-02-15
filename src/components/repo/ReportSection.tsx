@@ -8,15 +8,17 @@ import styles from './Reports.style';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Events } from '../../modules/Events';
 import Icon from 'react-native-vector-icons/AntDesign';
+import emitter from '../../services/EventManager';
 
 type Props = {
   event: Events;
 };
 
 const ReportSection: React.FC<Props> = ({ event }) => {
-  console.log('ReportSection');
+  // console.log('ReportSection');
 
   const [showTagsOnly, setShowTagsOnly] = useState(true);
+  const [inputValue, setInputValue] = useState<string>("Valore iniziale");
 
   const navigation = useNavigation<any>();
 
@@ -29,22 +31,39 @@ const ReportSection: React.FC<Props> = ({ event }) => {
   );
 
   const toggleFullReportVisibilty = () => {
-    for(var count = 0; count < data.length; count++)
-    {
-      console.log('id ' + (data[count] as Reports).idReport + ' showTagOnly ' + (data[count] as Reports).showTagOnly );
+    for (var count = 0; count < data.length; count++) {
+      console.log('id ' + (data[count] as Reports).idReport + ' showTagOnly ' + (data[count] as Reports).showTagOnly);
       (data[count] as Reports).showTagOnly = !showTagsOnly;
-      console.log('id ' + (data[count] as Reports).idReport + ' showTagOnly ' + (data[count] as Reports).showTagOnly );
+      console.log('id ' + (data[count] as Reports).idReport + ' showTagOnly ' + (data[count] as Reports).showTagOnly);
     }
-     setShowTagsOnly(!showTagsOnly);
-    };
+    setShowTagsOnly(!showTagsOnly);
+  };
+
+  useEffect(() => {
+    setInputValue("valore iniziale");
+    console.log("inputValue '" + inputValue + "'");
+  }, []);
 
   useEffect(() => {
     console.log('useEffect called. showTagsOnly is ' + showTagsOnly);
   }, [showTagsOnly]);
 
+  useEffect(() => {
+    const updateInputValue = (newValue: string) => {
+      setInputValue(newValue);
+    };
+
+    emitter.on('updateInput', updateInputValue);
+
+    // Cleanup the listener
+    return () => {
+      emitter.off('updateInput', updateInputValue);
+    };
+  }, []);
+
   const addReport = (idEvent: number, idUser: number) => {
     console.log('adding report for ', idEvent, idUser);
-    navigation.navigate('ReportAddItem', { idEvent, idUser });
+    navigation.navigate('ReportAddItem', { inputValue });
   };
 
   return (
@@ -61,7 +80,7 @@ const ReportSection: React.FC<Props> = ({ event }) => {
           <Icon name="pluscircleo" size={35} />
         </TouchableOpacity>
       </View>
-      <View style={[styles.reportsContainer]}>
+      <View style={[styles.reportsContainer, { height: '90%' }]}>
         <ScrollView>
           {data?.map((report: Reports) => (
             <ReportItem
@@ -70,9 +89,6 @@ const ReportSection: React.FC<Props> = ({ event }) => {
             />
           ))}
         </ScrollView>
-      </View>
-      <View style={styles.footer}>
-        <Text>{ }</Text>
       </View>
     </View>
   );

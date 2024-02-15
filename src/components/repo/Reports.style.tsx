@@ -9,10 +9,11 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#FFFFFF',
     // borderWidth: 1,
-    // borderColor: 'red'
+    borderColor: 'red'
   },
   header: {
     height: '10%',
+    minHeight: 40,
     width: '95%',
     alignSelf: 'center',
     backgroundColor: 'white',
@@ -21,10 +22,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     directions: 'inherit',
     flexWrap: 'nowrap',
-    // borderWidth: 1
+    // borderWidth: 1,
+    borderColor: 'blu'
   },
   footer: {
-    height: '10%',
+    height: '15%',
     width: '100%',
     alignSelf: 'center',
     backgroundColor: '#DCF8C6',
@@ -34,8 +36,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     directions: 'inherit',
     flexWrap: 'nowrap',
-    // borderWidth: 
-    },
+    // borderWidth: 1,
+    borderColor: 'orange'
+  },
   iconContainer: {
     width: 60,
     height: 60,
@@ -45,14 +48,17 @@ const styles = StyleSheet.create({
     height: 35,
   },
   reportsContainer: {
-    height: '80%',
+    height: '75%',
     width: '100%',
     alignSelf: 'center',
     backgroundColor: '#DCF8C6',
-    // borderWidth: 1
+    // borderWidth: 1,
+    borderColor: 'black'
   },
   reportItem: {
     width: '100%',
+    borderColor: 'cyan',
+    // borderWidth: 1
   },
 });
 
