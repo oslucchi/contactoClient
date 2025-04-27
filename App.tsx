@@ -7,6 +7,8 @@ import Agenda from './src/components/agenda/Agenda';
 import TitleBar from './src/components/TitleBar';
 import ReportAddItem from './src/components/repo/ReportAddItem';
 import {Events} from './src/modules/Events';
+import ReportDetails from './src/components/repo/ReportDetails';
+import { Reports } from './src/modules/Reports';
 
 const Stack = createStackNavigator();
 
@@ -20,10 +22,12 @@ const contactoTheme = {
 };
 
 export type ParamList = {
-  EventActionHandler: {event: Events};
   Agenda: undefined;
+  EventActionHandler: { event: any };
   ReportAddItem: {idEvent: number; idUser: number};
+  ReportDetails: { report: Reports };
 };
+
 
 export default function App() {
   return (
@@ -50,6 +54,13 @@ export default function App() {
             headerTitle: () => <TitleBar functionName={'Azioni'} />,
           }}
         />
+      <Stack.Screen
+        name="ReportDetails"
+        component={ReportDetails}
+        options={{
+          headerTitle: () => <TitleBar functionName={"Report Details"} />,
+        }}
+      />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -8,10 +8,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type Props = {
   report: Reports;
+  showTagsOnly: boolean;
+  fontSize: number;
 };
 
-
-const ReportItem: React.FC<Props> = ({ report }) => {
+const ReportItem: React.FC<Props> = ({ report, showTagsOnly, fontSize }) => {
   console.log('ReportItem');
   const [showTagOnly, setShowTagOnly] = useState(report.showTagOnly)
 
@@ -31,7 +32,7 @@ const ReportItem: React.FC<Props> = ({ report }) => {
       {report.showTagOnly ? (
         <Text style={{ fontSize: 12 }}>{report?.summary}</Text>
       ) : (
-        <Text style={{ fontSize: 12 }}>{report?.report}</Text>
+        <Text style={{ fontSize }}>{report?.report}</Text>
       )}
     </View>
     </TouchableOpacity>

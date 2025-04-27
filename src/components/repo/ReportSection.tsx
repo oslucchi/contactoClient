@@ -9,6 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Events } from '../../modules/Events';
 import Icon from 'react-native-vector-icons/AntDesign';
 import emitter from '../../services/EventManager';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = {
   event: Events;
@@ -17,8 +18,12 @@ type Props = {
 const ReportSection: React.FC<Props> = ({ event }) => {
   // console.log('ReportSection');
 
-  const [showTagsOnly, setShowTagsOnly] = useState(true);
   const [inputValue, setInputValue] = useState<string>("Valore iniziale");
+  console.log('ReportSection');
+  const FONT_SIZE_KEY = '@user_font_size';
+
+  const [showTagsOnly, setShowTagsOnly] = useState(true);
+  const [fontSize, setFontSize] = useState(14);
 
   const navigation = useNavigation<any>();
 
@@ -29,6 +34,30 @@ const ReportSection: React.FC<Props> = ({ event }) => {
       idCompany: event.idCompany,
     },
   );
+
+  useEffect(() => {
+    const loadFontSize = async () => {
+      try {
+        const savedSize = await AsyncStorage.getItem(FONT_SIZE_KEY);
+        if (savedSize !== null) {
+          setFontSize(parseInt(savedSize));
+        }
+      } catch (e) {
+        console.log('Failed to load font size:', e);
+      }
+    };
+  
+    loadFontSize();
+  }, []);
+
+  const updateFontSize = async (newSize: number) => {
+    try {
+      await AsyncStorage.setItem(FONT_SIZE_KEY, newSize.toString());
+      setFontSize(newSize);
+    } catch (e) {
+      console.log('Failed to save font size:', e);
+    }
+  };
 
   const toggleFullReportVisibilty = () => {
     for (var count = 0; count < data.length; count++) {
@@ -75,18 +104,34 @@ const ReportSection: React.FC<Props> = ({ event }) => {
             style={styles.iconContainerSmall}
           />
         </TouchableOpacity>
-        <Text style={{ fontSize: 35 }}>Reports</Text>
-        <TouchableOpacity onPress={() => addReport(event.idEvent, 1)}>
-          <Icon name="pluscircleo" size={35} />
-        </TouchableOpacity>
+        <Text style={{ fontSize: 30 }}>Reports</Text>
+        
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => updateFontSize(Math.max(fontSize - 2, 10))}>
+            <Text style={{ fontSize: 20, marginHorizontal: 5 }}>A-</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => updateFontSize(Math.min(fontSize + 2, 30))}>
+            <Text style={{ fontSize: 20, marginHorizontal: 5 }}>A+</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => addReport(event.idEvent, 1)}>
+            <Icon name="pluscircleo" size={30} />
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={[styles.reportsContainer, { height: '90%' }]}>
-        <ScrollView>
+      <View style={[styles.reportsContainer, { marginBottom: 120 }]}>
+        <ScrollView contentContainerStyle={{ padding: 8 }}>
           {data?.map((report: Reports) => (
-            <ReportItem
+            <TouchableOpacity
               key={report?.idReport}
-              report={report}
-            />
+              activeOpacity={0.6}
+              onPress={() => navigation.navigate('ReportDetails', { report })}
+            >
+              <ReportItem
+                report={report}
+                showTagsOnly={showTagsOnly}
+                fontSize={fontSize}
+              />
+            </TouchableOpacity>
           ))}
         </ScrollView>
       </View>

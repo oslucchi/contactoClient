@@ -26,14 +26,18 @@ const EventsUpcoming: React.FC<Props> = () => {
       ) : error ? (
         <Text>Something went wrong</Text>
       ) : (
-        <ScrollView style={styles.upcomingCardsContainer}>
-          {data?.map((event: Events) => (
-            <EventCard key={event?.idEvent} event={event} />
-          ))}
+        <ScrollView
+          style={styles.upcomingCardsContainer}
+          contentContainerStyle={{ alignItems: 'stretch' }}
+        >
+          {
+            data?.map((event: Events) => (
+              <EventCard key={event?.idEvent} event={event} />
+            ))
+          }
         </ScrollView>
       )}
     </View>
   );
 };
-
 export default EventsUpcoming;

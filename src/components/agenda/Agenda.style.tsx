@@ -7,34 +7,47 @@ const height = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   scheduleContainer: {
-    position: 'absolute',
-    top: 30,
-    left: 10,
-  },
+    flex: 1,
+    padding: 16,
+  },  
   upcomingCardsContainer: {
     paddingTop: 20,
     paddingBottom: 20,
     backgroundColor: 'white',
   },
   cardContainer: {
-    width: width - 20,
-    paddingLeft: 30,
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: 'white',
+    width: '100%', // very important to occupy full width
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
+  // cardContainer: {
+  //   width: width - 20,
+  //   paddingLeft: 30,
+  //   flex: 1,
+  //   flexDirection: 'column',
+  //   backgroundColor: 'white',
+  // },
   dataContainer: {
-    flex: 1,
     flexDirection: 'row',
-    width: '90%',
     alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1,
-    textAlign: 'center',
-    borderRadius: 10,
     backgroundColor: 'white',
-    paddingLeft: '2%',
+    borderRadius: 8,
+    padding: 12,
+    // no need for width or flex here unless you want more control
   },
+  
+  // dataContainer: {
+  //   flex: 1,
+  //   flexDirection: 'row',
+  //   width: '90%',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   zIndex: 1,
+  //   textAlign: 'center',
+  //   borderRadius: 10,
+  //   backgroundColor: 'white',
+  //   paddingLeft: '2%',
+  // },
 
   textContainer: {
     width: '80%',
@@ -78,14 +91,14 @@ const styles = StyleSheet.create({
   },
 
   appContainer: {
-    height: height,
-    paddingTop: SIZES.medium,
     flex: 1,
-    alignItems: 'center',
+    paddingTop: SIZES.medium,
+    alignItems: 'stretch',   // <-- THIS is critical
     flexDirection: 'column',
     fontFamily: 'Montserrat-Italic',
     backgroundColor: '#FFFFFF',
   },
+  
   container: {
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',

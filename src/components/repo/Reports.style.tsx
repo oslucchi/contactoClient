@@ -22,43 +22,37 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     directions: 'inherit',
     flexWrap: 'nowrap',
-    // borderWidth: 1,
-    borderColor: 'blu'
-  },
-  footer: {
-    height: '15%',
-    width: '100%',
-    alignSelf: 'center',
-    backgroundColor: '#DCF8C6',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-start',
-    directions: 'inherit',
-    flexWrap: 'nowrap',
-    // borderWidth: 1,
-    borderColor: 'orange'
   },
   iconContainer: {
-    width: 60,
-    height: 60,
+    width: 40,
+    height: 40,
   },
   iconContainerSmall: {
     width: 35,
     height: 35,
   },
   reportsContainer: {
-    height: '75%',
-    width: '100%',
+    flex: 1,
+    width: '95%',
     alignSelf: 'center',
     backgroundColor: '#DCF8C6',
-    // borderWidth: 1,
-    borderColor: 'black'
+    borderRadius: 8,
+    overflow: 'hidden',   // optional for rounded edges
+  },
+  footer: {
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderTopWidth: 1,
+    borderColor: '#ccc',
   },
   reportItem: {
-    width: '100%',
-    borderColor: 'cyan',
-    // borderWidth: 1
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    width: '95%',
   },
 });
 
