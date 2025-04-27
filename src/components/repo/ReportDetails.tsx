@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { Reports } from '../../modules/Reports';
+import dayjs from 'dayjs';
 
 type ReportDetailsParamList = {
   ReportDetails: { report: Reports };
@@ -15,7 +16,8 @@ const ReportDetails: React.FC = () => {
   const { report } = route.params;
 
   const [reporter, setReporter] = useState(report.reporter);
-  const [date, setDate] = useState(new Date(report.date).toLocaleDateString());
+  const [date, setDate] = useState(dayjs(report.date).format('DD/MM/YYYY'));
+
   const [body, setBody] = useState(report.report);
 
   const handleSave = () => {

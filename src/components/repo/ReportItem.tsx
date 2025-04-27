@@ -32,7 +32,7 @@ const ReportItem: React.FC<Props> = ({ report, showTagsOnly, fontSize }) => {
       {report.showTagOnly ? (
         <Text style={{ fontSize: 12 }}>{report?.summary}</Text>
       ) : (
-        <Text style={{ fontSize }}>{report?.report}</Text>
+        <Text style={{ fontSize, color: '#111111' }}>{report?.report}</Text>
       )}
     </View>
     </TouchableOpacity>
