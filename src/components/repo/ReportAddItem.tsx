@@ -217,11 +217,12 @@ const ReportAddItem = () => {
     Voice.onSpeechError = onSpeechError;
 
     return () => {
-      // destroy the voice instance after component unmounts
       Voice.destroy().then(Voice.removeAllListeners);
-      console.log('Voide listners destroyed');
+      console.log('Voice listeners destroyed');
     };
   }, []);
+
+  // --- Start / Stop Speech Recognition ---
 
   const startSpeechToText = async () => {
     setRecording(true);
@@ -246,6 +247,22 @@ const ReportAddItem = () => {
       console.error('Got error while ending', error);
     }
   };
+
+  const handleSave = () => {
+    console.log('Saving report:\n', recordingResult);
+    // Here you can implement your actual save logic
+  };
+
+  const handleClear = () => {
+    setRecordingResult('');
+    setPartialText('');
+  };
+
+  const toggleEditable = () => {
+    setEditable(prev => !prev);
+  };
+
+  // --- Render ---
 
   return (
     <SafeAreaView style={[styles.mainContainer, { backgroundColor: '#DCF8C6', borderWidth: 1 }]}>
@@ -283,10 +300,45 @@ export default ReportAddItem
       <Button title="Stop" onPress={stopSpeechToText} />
       <Text>{recording ? 'Recording' : 'Not Recording'}</Text>
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#DCF8C6',
+  },
+  inputContainer: {
+    flex: 1,
+    padding: 3,
+    paddingBottom: 60,
+  },
+  textInput: {
+    flex: 1,
+    textAlignVertical: 'top',
+    fontSize: 16,
+    backgroundColor: '#DCF8C6',
+    color: '#111111',
+  },
+  iconsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: 60,
+    backgroundColor: '#DCF8C6',
+    paddingHorizontal: 10,
+  },
+  bottomBand: {
+    height: 40,
+    backgroundColor: 'white',
+    borderTopWidth: 1,
+    borderColor: '#ccc',
+  },
+  icon: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
+  },
+  disabledIcon: {
+    opacity: 0.3
+  },
+});
 
-      <View style={{backgroundColor: '#DCF8C6', height: '95%'}}>
-        {recordingResult}
-      </View>
-
-
-      */
+export default ReportAddItem;
