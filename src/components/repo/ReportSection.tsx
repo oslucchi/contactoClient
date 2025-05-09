@@ -1,99 +1,32 @@
-import { View, Text, ScrollView, Image } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import FetchData from '../../services/FetchData';
-import { Reports } from '../../modules/Reports';
-import ReportItem from './ReportItem';
+import React, { useState } from 'react';
+import { View, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
 import styles from './Reports.style';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Events } from '../../modules/Events';
 import Icon from 'react-native-vector-icons/AntDesign';
-import emitter from '../../services/EventManager';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import ReportItem from './ReportItem';
+import { Reports } from '../../modules/Reports';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AppStackParamList } from '../../navigation/types';
 
-type Props = {
-  event: Events;
-};
+type NavigationProp = NativeStackNavigationProp<AppStackParamList, 'ReportSection'>;
+type RoutePropType = RouteProp<AppStackParamList, 'ReportSection'>;
 
-const ReportSection: React.FC<Props> = ({ event }) => {
-  // console.log('ReportSection');
+const ReportSection = () => {
+  const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<RoutePropType>();
+  const { data, event } = route.params;
 
-  const [inputValue, setInputValue] = useState<string>("Valore iniziale");
-  console.log('ReportSection');
-  const FONT_SIZE_KEY = '@user_font_size';
-
-  const [showTagsOnly, setShowTagsOnly] = useState(true);
+  const [showTagsOnly, setShowTagsOnly] = useState(false);
   const [fontSize, setFontSize] = useState(14);
 
-  const navigation = useNavigation<any>();
-
-  const { data, isLoading, error } = FetchData(
-    'post',
-    'restcall/agenda/getReports',
-    {
-      idCompany: event.idCompany,
-    },
-  );
-
-  useEffect(() => {
-    const loadFontSize = async () => {
-      try {
-        const savedSize = await AsyncStorage.getItem(FONT_SIZE_KEY);
-        if (savedSize !== null) {
-          setFontSize(parseInt(savedSize));
-        }
-      } catch (e) {
-        console.log('Failed to load font size:', e);
-      }
-    };
-  
-    loadFontSize();
-  }, []);
-
-  const updateFontSize = async (newSize: number) => {
-    try {
-      await AsyncStorage.setItem(FONT_SIZE_KEY, newSize.toString());
-      setFontSize(newSize);
-    } catch (e) {
-      console.log('Failed to save font size:', e);
-    }
-  };
-
   const toggleFullReportVisibilty = () => {
-    for (var count = 0; count < data.length; count++) {
-      console.log('id ' + (data[count] as Reports).idReport + ' showTagOnly ' + (data[count] as Reports).showTagOnly);
-      (data[count] as Reports).showTagOnly = !showTagsOnly;
-      console.log('id ' + (data[count] as Reports).idReport + ' showTagOnly ' + (data[count] as Reports).showTagOnly);
-    }
-    setShowTagsOnly(!showTagsOnly);
+    setShowTagsOnly(prev => !prev);
   };
 
-  useEffect(() => {
-    setInputValue("valore iniziale");
-    console.log("inputValue '" + inputValue + "'");
-  }, []);
-
-  useEffect(() => {
-    console.log('useEffect called. showTagsOnly is ' + showTagsOnly);
-  }, [showTagsOnly]);
-
-  useEffect(() => {
-    const updateInputValue = (newValue: string) => {
-      setInputValue(newValue);
-    };
-
-    emitter.on('updateInput', updateInputValue);
-
-    // Cleanup the listener
-    return () => {
-      emitter.off('updateInput', updateInputValue);
-    };
-  }, []);
-
-  const addReport = (idEvent: number, idUser: number) => {
-    console.log('adding report for ', idEvent, idUser);
-    navigation.navigate('ReportAddItem', { inputValue });
-  };
+  const addReport = (eventId: number, flag: number) => {
+    console.log('addReport called with', eventId, flag);
+    navigation.navigate('ReportAddItem', { idEvent: eventId, idUser: 1 }); 
+  }
 
   return (
     <View style={styles.mainContainer}>
@@ -101,16 +34,16 @@ const ReportSection: React.FC<Props> = ({ event }) => {
         <TouchableOpacity onPress={toggleFullReportVisibilty}>
           <Image
             source={require('../../../assets/icons/details.png')}
-            style={styles.iconContainerSmall}
+            style={{ width: 24, height: 24, marginRight: 8 }}
           />
         </TouchableOpacity>
         <Text style={{ fontSize: 30 }}>Reports</Text>
-        
+
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => updateFontSize(Math.max(fontSize - 2, 10))}>
+          <TouchableOpacity onPress={() => setFontSize(Math.max(fontSize - 2, 10))}>
             <Text style={{ fontSize: 20, marginHorizontal: 5 }}>A-</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => updateFontSize(Math.min(fontSize + 2, 30))}>
+          <TouchableOpacity onPress={() => setFontSize(Math.min(fontSize + 2, 30))}>
             <Text style={{ fontSize: 20, marginHorizontal: 5 }}>A+</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => addReport(event.idEvent, 1)}>
@@ -118,8 +51,9 @@ const ReportSection: React.FC<Props> = ({ event }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.reportsContainer}>
-        <ScrollView contentContainerStyle={{ padding: 8, paddingBottom: 90 }}>
+
+      <View style={styles.bodyContainer}>
+        <ScrollView contentContainerStyle={{ padding: 8, paddingBottom: 80 }}>
           {data?.map((report: Reports) => (
             <TouchableOpacity
               key={report?.idReport}

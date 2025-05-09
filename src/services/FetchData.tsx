@@ -9,7 +9,7 @@ const FetchData = (method: string, endpoint: string, query: object) => {
 
   const options = {
     method: method,
-    url: `http://192.168.11.132:8080/contactoServer/${endpoint}`,
+    url: `http://192.168.11.129:8080/contactoServer/${endpoint}`,
     headers: {
       "Content-Type": "application/json",
       Language: language,

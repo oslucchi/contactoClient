@@ -3,19 +3,51 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: '#FFFFFF', // White background for the top band
   },
   header: {
     padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
-  reportsContainer: {
+  bodyContainer: {
     flex: 1,
+    backgroundColor: '#DCF8C6', // Green background for the body
+    padding: 16,
+  },
+  featureIconsArea: {
+    height: 80,
+    backgroundColor: '#DCF8C6',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  systemButtonsBand: {
+    height: 60,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textInput: {
+    flex: 1,
+    textAlignVertical: 'top',
+    fontSize: 16,
+    color: '#111111',
+    backgroundColor: '#DCF8C6',
+  },
+  icon: {
+    width: 60,
+    height: 60,
+    resizeMode: 'contain',
+  },
+  disabledIcon: {
+    opacity: 0.3,
   },
   reportItemContainer: {
     backgroundColor: '#ffffff',
@@ -28,16 +60,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  tag: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#555',
-    backgroundColor: '#e0e0e0',
-    borderRadius: 4,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    marginRight: 4,
-  },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -48,17 +70,20 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 4,
   },
-  footerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 6,
-  },
   dateText: {
     fontSize: 12,
     color: '#777',
   },
-  iconContainer: {
-    padding: 8,
+  footerButton: {
+    backgroundColor: '#34B7F1',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+  },
+  footerButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
