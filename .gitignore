@@ -69,4 +69,4 @@ yarn-error.log
 # project data
 /.metadata
 /package-lock.json
-yarn.lock
+/yarn.lock
