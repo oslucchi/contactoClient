@@ -118,8 +118,8 @@ const ReportSection: React.FC<Props> = ({ event }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={[styles.reportsContainer, { marginBottom: 120 }]}>
-        <ScrollView contentContainerStyle={{ padding: 8 }}>
+      <View style={styles.reportsContainer}>
+        <ScrollView contentContainerStyle={{ padding: 8, paddingBottom: 90 }}>
           {data?.map((report: Reports) => (
             <TouchableOpacity
               key={report?.idReport}

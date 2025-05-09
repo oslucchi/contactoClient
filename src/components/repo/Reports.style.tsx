@@ -1,59 +1,64 @@
 import { StyleSheet } from 'react-native';
-import { Dimensions } from 'react-native';
-
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    height: '100%',
-    backgroundColor: '#FFFFFF',
-    // borderWidth: 1,
-    borderColor: 'red'
+    flex: 1,
+    backgroundColor: '#F8F8F8',
   },
   header: {
-    height: '10%',
-    minHeight: 40,
-    width: '95%',
-    alignSelf: 'center',
-    backgroundColor: 'white',
+    padding: 12,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    directions: 'inherit',
-    flexWrap: 'nowrap',
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-  },
-  iconContainerSmall: {
-    width: 35,
-    height: 35,
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
   reportsContainer: {
     flex: 1,
-    width: '95%',
-    alignSelf: 'center',
-    backgroundColor: '#DCF8C6',
+  },
+  reportItemContainer: {
+    backgroundColor: '#ffffff',
     borderRadius: 8,
-    overflow: 'hidden',   // optional for rounded edges
+    padding: 12,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 4,
+    elevation: 2,
   },
-  footer: {
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderTopWidth: 1,
-    borderColor: '#ccc',
+  tag: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#555',
+    backgroundColor: '#e0e0e0',
+    borderRadius: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    marginRight: 4,
   },
-  reportItem: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    width: '95%',
-    
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  description: {
+    fontSize: 14,
+    color: '#333',
+    marginBottom: 4,
+  },
+  footerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 6,
+  },
+  dateText: {
+    fontSize: 12,
+    color: '#777',
+  },
+  iconContainer: {
+    padding: 8,
   },
 });
 

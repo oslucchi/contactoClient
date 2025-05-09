@@ -12,7 +12,6 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-native-community/masked-view": "^0.1.11",
-    "@react-native-community/voice": "^1.1.9",
     "@react-native-voice/voice": "^3.2.4",
     "@react-navigation/native": "^6.1.8",
     "@react-navigation/stack": "^6.3.18",
