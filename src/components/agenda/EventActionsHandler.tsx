@@ -2,27 +2,25 @@ import React from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  Dimensions,
   ActivityIndicator,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { AppStackParamList } from '../../navigation/types';
 import { Events } from '../../modules/Events';
+import { AppStackParamList } from '../../navigation/types';
 import FetchData from '../../services/FetchData';
 import { Reports } from '../../modules/Reports';
+import styles from '../../styles/Application.styles';
 
 type EventActionHandlerRouteProp = RouteProp<AppStackParamList, 'EventActionHandler'>;
 type NavigationProp = NativeStackNavigationProp<AppStackParamList, 'EventActionHandler'>;
 
-const EventActionHandler = () => {
+const EventActionHandler: React.FC = () => {
   const route = useRoute<EventActionHandlerRouteProp>();
   const navigation = useNavigation<NavigationProp>();
   const event: Events = route.params.event;
-
-  console.debug('event passed ', event);
 
   const { data: fetchedData, isLoading, error } = FetchData(
     'post',
@@ -41,71 +39,55 @@ const EventActionHandler = () => {
     }
   };
 
-  const handleEditEvent = () => {
-    console.log('TODO: navigate to Edit Event screen');
-  };
-
   return (
-    <View style={styles.mainContainer}>
-      <Text style={styles.title}>Actions for: {event.description}</Text>
+    <SafeAreaView style={styles.mainContainer}>
+      <View style={styles.headerArea}>
+        <Text style={{ fontSize: 18, fontWeight: '600' }}>
+          Event: {event.description}
+        </Text>
+      </View>
 
-      {isLoading ? (
-        <ActivityIndicator size="large" color="#312651" />
-      ) : error ? (
-        <Text style={styles.errorText}>Something went wrong while loading reports</Text>
-      ) : (
-        <>
-          <TouchableOpacity style={styles.menuButton} onPress={handleViewReports}>
-            <Text style={styles.menuButtonText}>📄 View Reports</Text>
-          </TouchableOpacity>
+      <View style={styles.bodyContainer}>
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#312651" />
+        ) : error ? (
+          <Text>Something went wrong</Text>
+        ) : (
+          <>
+            <TouchableOpacity
+              style={styles.menuButton}
+              onPress={handleViewReports}
+            >
+              <Text style={styles.menuButtonText}>📄 View Reports</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuButton} onPress={handleEditEvent}>
-            <Text style={styles.menuButtonText}>📝 Edit Event (Coming Soon)</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuButton}
+              onPress={() => console.log('Edit Event')}
+            >
+              <Text style={styles.menuButtonText}>📝 Edit Event</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.menuButton}
-            onPress={() => console.log('TODO: add more actions')}
-          >
-            <Text style={styles.menuButtonText}>➕ More Options</Text>
-          </TouchableOpacity>
-        </>
-      )}
-    </View>
+            <TouchableOpacity
+              style={styles.menuButton}
+              onPress={() => console.log('Other options')}
+            >
+              <Text style={styles.menuButtonText}>➕ More Options</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+
+      <View style={styles.featureIconsArea} />
+      <View style={styles.systemButtonsBand}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={{ color: '#312651', fontWeight: 'bold', fontSize: 16, textAlign: 'center', paddingTop: 18 }}>
+            ← BACK
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
-
-const width = Dimensions.get('window').width;
-
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: '#DCF8C6',
-    paddingHorizontal: 20,
-    paddingTop: 40,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    textAlign: 'center',
-  },
-  errorText: {
-    color: 'red',
-    textAlign: 'center',
-  },
-  menuButton: {
-    backgroundColor: '#312651',
-    borderRadius: 8,
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    marginVertical: 10,
-    alignItems: 'center',
-  },
-  menuButtonText: {
-    color: 'white',
-    fontSize: 18,
-  },
-});
 
 export default EventActionHandler;

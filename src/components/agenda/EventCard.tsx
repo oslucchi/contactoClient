@@ -2,12 +2,12 @@ import React from 'react';
 import { Events } from '../../modules/Events';
 
 import dayjs from 'dayjs';
-import styles from './Agenda.style';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import * as icons from '../../../assets/icons/index';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../../navigation/types';
+import styles from '../../styles/Application.styles';
 
 type NavigationProp = NativeStackNavigationProp<AppStackParamList, 'EventActionHandler'>;
 
@@ -18,30 +18,26 @@ type Props = {
 const EventCard: React.FC<Props> = ({ event }) => {
   const navigation = useNavigation<NavigationProp>();
 
-  let invitees: string = '';
-  let separator: string = '';
+  console.log('EventCard');
+
+  let invitees = '';
+  let separator = '';
 
   event?.participants?.forEach(participant => {
     invitees += separator + participant.familyName;
     separator = ', ';
   });
 
-  const phoneCall = require('../../../assets/icons/phoneCall.png');
-  const videoCall = require('../../../assets/icons/videoCall.png');
-  const meetInPerson = require('../../../assets/icons/meetInPerson.png');
-  const whiteIcon = require('../../../assets/icons/iconaBianca.png');
-
-  let iconName: any = whiteIcon;
-
+  let iconName = icons.default.iconaBianca;
   switch (event?.iconName) {
     case 'phoneCall':
-      iconName = phoneCall;
+      iconName = icons.default.phoneCall;
       break;
     case 'videoCall':
-      iconName = videoCall;
+      iconName = icons.default.videoCall;
       break;
     case 'meetInPerson':
-      iconName = meetInPerson;
+      iconName = icons.default.meetInPerson;
       break;
   }
 
@@ -51,12 +47,13 @@ const EventCard: React.FC<Props> = ({ event }) => {
   };
 
   return (
-    <TouchableOpacity
-      style={[styles.cardContainer, { flex: 1 }]}
+    <TouchableOpacity 
+      style={styles.cardContainer} 
       onPress={handlePress}
+      activeOpacity={0.7}
     >
-      <View style={[styles.dataContainer, styles.shadowProp, { flex: 1 }]}>
-        <View style={styles.textContainer}>
+      <View style={[styles.cardContent, styles.shadowProp]}>
+        <View style={styles.textBlock}>
           <Text numberOfLines={1} style={styles.dateAndTopic}>
             {dayjs(event?.date).format('MM/DD')} - {event?.description}
           </Text>
@@ -74,7 +71,7 @@ const EventCard: React.FC<Props> = ({ event }) => {
           )}
         </View>
         <View style={styles.imgContainer}>
-          <Image source={iconName} style={styles.imgLogo} />
+          <Image source={iconName} style={styles.icon} />
         </View>
       </View>
     </TouchableOpacity>

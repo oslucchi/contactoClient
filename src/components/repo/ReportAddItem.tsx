@@ -5,9 +5,11 @@ import {
   TouchableOpacity,
   Image,
   View,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import Voice, { SpeechResultsEvent } from '@react-native-voice/voice';
-import styles from './Reports.style';
+import styles from '../../styles/Application.styles';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../../navigation/types';
@@ -15,17 +17,14 @@ import { AppStackParamList } from '../../navigation/types';
 type NavigationProp = NativeStackNavigationProp<AppStackParamList, 'ReportAddItem'>;
 
 const ReportAddItem = () => {
+  const navigation = useNavigation<NavigationProp>();
+
   const [recording, setRecording] = useState(false);
   const [recordingResult, setRecordingResult] = useState('');
   const [partialText, setPartialText] = useState('');
   const [editable, setEditable] = useState(false);
 
-  const navigation = useNavigation<NavigationProp>();
-
-  const speechStartHandler = () => {
-    console.log('Started recording');
-  };
-
+  const speechStartHandler = () => console.log('Started recording');
   const speechEndHandler = () => {
     console.log('Ended recording');
     setRecording(false);
@@ -34,12 +33,10 @@ const ReportAddItem = () => {
       setPartialText('');
     }
   };
-
   const speechErrorHandler = (e: any) => {
     console.log('Recording error ', e);
     setRecording(false);
   };
-
   const speechResultsHandler = (e: SpeechResultsEvent) => {
     const newText = e?.value?.[0];
     if (newText) {
@@ -47,13 +44,33 @@ const ReportAddItem = () => {
       setPartialText('');
     }
   };
-
   const speechPartialResultsHandler = (e: SpeechResultsEvent) => {
     const newText = e?.value?.[0];
     if (newText) {
       setPartialText(newText);
     }
   };
+
+  useEffect(() => {
+    const requestPermission = async () => {
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+          {
+            title: 'Microphone Permission',
+            message: 'This app needs access to your microphone to record speech.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          }
+        );
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Microphone permission denied');
+        }
+      }
+    };
+    requestPermission();
+  }, []);
 
   useEffect(() => {
     Voice.onSpeechStart = speechStartHandler;
@@ -116,7 +133,7 @@ const ReportAddItem = () => {
           style={styles.textInput}
           value={recordingResult + (partialText ? ('\n' + partialText) : '')}
           multiline
-          placeholder="Start speaking..."
+          placeholder="Press the recording button and start speaking..."
           editable={editable}
           onChangeText={(text) => {
             if (editable) {
@@ -179,7 +196,14 @@ const ReportAddItem = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.systemButtonsBand} />
+      <View style={styles.systemButtonsBand}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            source={require('../../../assets/images/back.png')}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
