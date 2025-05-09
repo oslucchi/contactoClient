@@ -10,5 +10,6 @@ export type Reports = {
   archived: boolean;
   reporter: string;
   status: boolean;
+  showTagOnly: boolean;
   selected: boolean;
 };

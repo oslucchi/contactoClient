@@ -57,9 +57,10 @@ const EventCard: React.FC<Props> = ({event}) => {
 
   return (
     <TouchableOpacity
-      style={styles.cardContainer}
-      onPress={() => handlePress(event)}>
-      <View style={[styles.dataContainer, styles.shadowProp]}>
+      style={[styles.cardContainer, { flex: 1 }]}
+      onPress={() => handlePress(event)}
+    >
+      <View style={[styles.dataContainer, { flex: 1 }, styles.shadowProp]}>
         <View style={styles.textContainer}>
           <Text numberOfLines={1} style={styles.dateAndTopic}>
             {dayjs(event?.date).format('MM/DD')}

@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     backgroundColor: "white",
-    verticalAlign: "middle",
   },
   menuiconContainer: {
     width: 50,
