@@ -1,220 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Platform, Button, Text, PermissionsAndroid, TouchableOpacity, Image, View } from 'react-native';
-import Voice, { SpeechResultsEvent, SpeechEndEvent } from '@react-native-community/voice';
-import { TextInput } from 'react-native-gesture-handler';
-import styles from './Reports.style';
-import emitter from '../../services/EventManager';
+import {
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  View,
+  StyleSheet,
+} from 'react-native';
+import Voice, { SpeechResultsEvent } from '@react-native-voice/voice';
 
-interface SpeechToTextProps {
-  initValue: string;
-}
-
-const ReportAddItem: React.FC<SpeechToTextProps> = ({ initValue }) => {
-  const [shouldRestartSpeechSession, setShouldRestartSpeechSession] = useState(false);
-  const [note, setNote] = useState<string>(initValue ? initValue : "");
-  const [isListening, setIsListening] = useState(false);
-
-  useEffect(() => {
-    requestPermission();
-
-    console.log("In ReportAddItem, initValue '" + initValue + "'");
-    Voice.onSpeechPartialResults = onSpeechPartialResults;
-    Voice.onSpeechResults = onSpeechResults; // Listen for final results as well
-    return () => {
-      Voice.destroy().then(Voice.removeAllListeners);
-    };
-  }, []);
-
-  useEffect(() => {
-    Voice.onSpeechEnd = onSpeechEnd;
-    Voice.onSpeechError = onSpeechError;
-
-    return () => {
-      Voice.destroy().then(Voice.removeAllListeners);
-    };
-  }, []);
-
-  const onSpeechEnd = (e: SpeechEndEvent) => {
-    console.log("onSpeechEnd called. shouldRestartSpeechSession is ",
-      shouldRestartSpeechSession);
-  };
-
-  const onSpeechError = (error: any) => {
-    console.log("onSpeechError called", error);
-    // if (shouldRestartSpeechSession) { // Implement logic to decide when to restart
-    //   startSpeechToText();
-    // }
-  };
-
-  const onSpeechPartialResults = (e: SpeechResultsEvent) => {
-    const results: string[] = e.value ? e.value : [];
-    // console.log("onSpeechPartialResults called, ", results.join(" "));
-  };
-
-  const updateParentInput = (newValue: string) => {
-    emitter.emit('updateInput', newValue);
-  };
-
-  const onSpeechResults = (e: SpeechResultsEvent) => {
-    console.log("onSpeeconSpeechResults called. shouldRestartSpeechSession is ", shouldRestartSpeechSession);
-    const results: string[] = e.value ? e.value : [];
-    if (results.length > 0) {
-      // Append new results to the existing inputValue
-
-      updateParentInput(results[results.length - 1]);
-      console.log(results[results.length - 1]);
-      setNote(note + "\n" + results[results.length - 1]);
-      if (shouldRestartSpeechSession) { // Implement logic to decide when to restart
-        startSpeechToText();
-      }
-
-    }
-  };
-
-  const requestPermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-          {
-            title: 'Microphone Permission',
-            message: 'This app requires access to your microphone.',
-            buttonPositive: 'OK',
-          }
-        );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('Permission denied');
-        }
-      } catch (err) {
-        console.warn(err);
-      }
-    }
-  };
-
-  const startSpeechToText = async () => {
-    console.log("Start");
-    setShouldRestartSpeechSession(true);
-    try {
-      await Voice.start('it-IT');
-      setIsListening(true);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const stopSpeechToText = async () => {
-    setShouldRestartSpeechSession(false);
-    console.log("Stop");
-    try {
-      await Voice.stop();
-      setIsListening(false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  return (
-    <SafeAreaView style={[styles.mainContainer, { backgroundColor: '#DCF8C6' }]}>
-      <TextInput
-        style={[styles.reportItem, { backgroundColor: '#DCF8C6', height: '15%' }]}
-        value={String(shouldRestartSpeechSession)}
-        multiline={true}
-      />
-      <TextInput
-        style={[styles.reportItem, { backgroundColor: '#DCF8C6', height: '70%' }]}
-        value={note}
-        multiline={true}
-      />
-      {isListening ? (
-        <View style={[styles.iconContainer, { width: '100%', height: '10%', alignItems: 'center', backgroundColor: '#DCF8C6' }]}>
-          <TouchableOpacity
-            onPress={stopSpeechToText} >
-            <Image
-              style={styles.iconContainer}
-              source={require('../../../assets/images/voiceLoading.gif')} />
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <View style={[styles.iconContainer, { width: '100%', height: '10%', alignItems: 'center', backgroundColor: '#DCF8C6' }]}>
-          <TouchableOpacity
-            onPress={startSpeechToText} >
-            <Image
-              style={styles.iconContainer}
-              source={require('../../../assets/images/startRecording.png')} />
-          </TouchableOpacity>
-        </View>
-      )}
-    </SafeAreaView>
-  );
-};
-
-export default ReportAddItem;
-
-
-
-
-
-
-
-
-/*
 const ReportAddItem = () => {
-  // console.log('ReportAddItem');
-
-  // const route = useRoute<RouteProp<ParamList, 'ReportAddItem'>>();
-  // const idEvent: number = route.params.idEvent;
-  // const idUser: number = route.params.idUser;
-
   const [recording, setRecording] = useState(false);
-  const [recordingResult, setRecordingResult] = useState("");
+  const [recordingResult, setRecordingResult] = useState('');
+  const [partialText, setPartialText] = useState('');
+  const [editable, setEditable] = useState(false);
 
-  const onSpeechStart = (e: any) => {
-    console.log('onSpeechStart: ', e);
+  const speechStartHandler = () => {
+    console.log('Started recording');
   };
 
-  const onSpeechRecognized = (e: SpeechRecognizedEvent) => {
-    console.log('onSpeechRecognized: ', e);
+  const speechEndHandler = () => {
+    console.log('Ended recording');
+    setRecording(false);
+    if (partialText.trim().length > 0) {
+      setRecordingResult(prev => prev + (prev ? '\n' : '') + partialText);
+      setPartialText('');
+    }
   };
 
-  const onSpeechEnd = (e: any) => {
-    console.log('onSpeechEnd: ', e);
+  const speechErrorHandler = (e: any) => {
+    console.log('Recording error ', e);
+    setRecording(false);
   };
 
-  const onSpeechError = (e: SpeechErrorEvent) => {
-    console.log('onSpeechError: ', e);
+  const speechResultsHandler = (e: SpeechResultsEvent) => {
+    const newText = e?.value?.[0];
+    if (newText) {
+      setRecordingResult(prev => prev + (prev ? '\n' : '') + newText);
+      setPartialText('');
+    }
   };
 
-  const onSpeechResults = (e: SpeechResultsEvent) => {
-    setRecordingResult("");
-    var rsltStrings: string[] | undefined = e.value;
-    rsltStrings?.forEach((item) => {
-      setRecordingResult(recordingResult + "\n" + item);
-    })
-    console.log('onSpeechResults: ', recordingResult);
-  };
-
-  const onSpeechPartialResults = (e: SpeechResultsEvent) => {
-    var rsltStrings: string[] | undefined = e.value;
-    rsltStrings?.forEach((item) => {
-      setRecordingResult(recordingResult + "\n" + item);
-    })
-    console.log('onSpeechResults: ', recordingResult);
-  };
-
-  const onSpeechVolumeChanged = (e: any) => {
-    console.log('onSpeechVolumeChanged: ', e);
+  const speechPartialResultsHandler = (e: SpeechResultsEvent) => {
+    const newText = e?.value?.[0];
+    if (newText) {
+      setPartialText(newText);
+    }
   };
 
   useEffect(() => {
-    // voice handler events
-    console.log('Voice listners eval');
-    console.log(Voice.isAvailable());
-    console.log(Voice.getSpeechRecognitionServices());
-    Voice.onSpeechStart = onSpeechStart;
-    Voice.onSpeechEnd = onSpeechEnd;
-    Voice.onSpeechResults = onSpeechResults;
-    Voice.onSpeechPartialResults = onSpeechPartialResults;
-    Voice.onSpeechError = onSpeechError;
+    Voice.onSpeechStart = speechStartHandler;
+    Voice.onSpeechEnd = speechEndHandler;
+    Voice.onSpeechResults = speechResultsHandler;
+    Voice.onSpeechPartialResults = speechPartialResultsHandler;
+    Voice.onSpeechError = speechErrorHandler;
 
     return () => {
       Voice.destroy().then(Voice.removeAllListeners);
@@ -222,35 +61,36 @@ const ReportAddItem = () => {
     };
   }, []);
 
-  // --- Start / Stop Speech Recognition ---
-
   const startSpeechToText = async () => {
-    setRecording(true);
-    console.log('Starting Voice recognition');
-    try {
-      await Voice.start('en-US');
-      console.log("Voice started");
-    }
-    catch (e) {
-      console.error('Got error while starting', e);
+    if (!recording) {
+      setRecording(true);
+      try {
+        await Voice.start('it-IT');
+      } catch (error) {
+        console.log('Error starting voice', error);
+        setRecording(false);
+      }
     }
   };
 
   const stopSpeechToText = async () => {
-    setRecording(false);
-    try {
-      console.log('Stopping Voice recognition');
-      await Voice.stop();
-      console.log("Voice stopped");
-    }
-    catch (error) {
-      console.error('Got error while ending', error);
+    if (recording) {
+      try {
+        await Voice.stop();
+      } catch (error) {
+        console.log('Error stopping voice', error);
+      } finally {
+        setRecording(false);
+        if (partialText.trim().length > 0) {
+          setRecordingResult(prev => prev + (prev ? '\n' : '') + partialText);
+          setPartialText('');
+        }
+      }
     }
   };
 
   const handleSave = () => {
     console.log('Saving report:\n', recordingResult);
-    // Here you can implement your actual save logic
   };
 
   const handleClear = () => {
@@ -262,43 +102,80 @@ const ReportAddItem = () => {
     setEditable(prev => !prev);
   };
 
-  // --- Render ---
-
   return (
-    <SafeAreaView style={[styles.mainContainer, { backgroundColor: '#DCF8C6', borderWidth: 1 }]}>
-      <TextInput
-        style={[styles.reportItem, { backgroundColor: '#DCF8C6', height: '85%' }]}
-        value={recordingResult}
-        multiline={true}
-      />
-      {recording ? (
-        <View style={[styles.iconContainer, { width: '100%', height: '10%', alignItems: 'center', backgroundColor: '#DCF8C6' }]}>
-          <TouchableOpacity
-            onPress={stopSpeechToText} >
-            <Image
-              style={styles.iconContainer}
-              source={require('../../../assets/images/voiceLoading.gif')} />
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <View style={[styles.iconContainer, { width: '100%', height: '10%', alignItems: 'center', backgroundColor: '#DCF8C6' }]}>
-          <TouchableOpacity
-            onPress={startSpeechToText} >
-            <Image
-              style={styles.iconContainer}
-              source={require('../../../assets/images/startRecording.png')} />
-          </TouchableOpacity>
-        </View>
-      )}
+    <SafeAreaView style={styles.container}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textInput}
+          value={recordingResult + (partialText ? ('\n' + partialText) : '')}
+          multiline
+          placeholder="Start speaking..."
+          editable={editable}
+          onChangeText={(text) => {
+            if (editable) {
+              setRecordingResult(text);
+              setPartialText('');
+            }
+          }}
+        />
+      </View>
+
+      <View style={styles.iconsContainer}>
+        <TouchableOpacity onPress={recording ? stopSpeechToText : startSpeechToText}>
+          <Image
+            style={styles.icon}
+            source={
+              recording
+                ? require('../../../assets/images/voiceLoading.gif')
+                : require('../../../assets/images/startRecording.png')
+            }
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={handleSave}
+          disabled={recordingResult.trim().length === 0}
+        >
+          <Image
+            style={styles.icon}
+            source={
+              recordingResult.trim().length === 0
+                ? require('../../../assets/images/saveIconDisabled.png')
+                : require('../../../assets/images/saveIconActive.png')
+            }
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={handleClear}
+          disabled={recordingResult.trim().length === 0}
+        >
+          <Image
+            style={styles.icon}
+            source={
+              recordingResult.trim().length === 0
+                ? require('../../../assets/images/clearIconDisabled.png')
+                : require('../../../assets/images/clearIcon.png')
+            }
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={toggleEditable}>
+          <Image
+            style={styles.icon}
+            source={
+              editable
+                ? require('../../../assets/images/editIconActive.png')
+                : require('../../../assets/images/editIcon.png')
+            }
+          />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.bottomBand} />
     </SafeAreaView>
   );
 };
-
-export default ReportAddItem
-
-      <Button title="Start" onPress={startSpeechToText} />
-      <Button title="Stop" onPress={stopSpeechToText} />
-      <Text>{recording ? 'Recording' : 'Not Recording'}</Text>
 
 const styles = StyleSheet.create({
   container: {
@@ -337,7 +214,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   disabledIcon: {
-    opacity: 0.3
+    opacity: 0.3,
   },
 });
 
