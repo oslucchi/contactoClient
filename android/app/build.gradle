@@ -1,3 +1,6 @@
+def enableNewArchitecture = project.hasProperty("newArchEnabled") ? project.newArchEnabled.toBoolean() : false
+def enableHermes = project.hasProperty("hermesEnabled") ? project.hermesEnabled.toBoolean() : true
+
 apply plugin: "kotlin-android"
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
@@ -91,6 +94,10 @@ android {
             speechRecognitionPermission: "android.permission.RECORD_AUDIO",
             isSpeechRecognitionPresent: "true"  // Note: String value, not boolean
         ]
+        buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", "$enableNewArchitecture")
+        buildConfigField("boolean", "IS_HERMES_ENABLED", "$enableHermes")
+        // Add this if missing:
+        missingDimensionStrategy "react-native-camera", "general"
     }
     signingConfigs {
         debug {

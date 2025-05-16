@@ -1,7 +1,6 @@
 package com.contactoclient;
 
 import android.app.Application;
-import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -11,7 +10,6 @@ import com.facebook.soloader.SoLoader;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
-
   private final ReactNativeHost mReactNativeHost =
       new DefaultReactNativeHost(this) {
         @Override
@@ -23,8 +21,6 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
-          // Packages that cannot be autolinked yet can be added manually here, for example:
-          // packages.add(new MyReactNativePackage());
           return packages;
         }
 
@@ -44,13 +40,6 @@ public class MainApplication extends Application implements ReactApplication {
         }
       };
 
-   @Override
-   protected ReactNativeHost createReactNativeHost() {
-     return new DefaultReactNativeHost(this) { // Changed from ReactNativeHost
-       // ... existing config
-     };
-   }
-
   @Override
   public ReactNativeHost getReactNativeHost() {
     return mReactNativeHost;
@@ -59,9 +48,8 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
-    SoLoader.init(this, /* native exopackage */ false);
+    SoLoader.init(this, false);
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      // If you opted-in for the New Architecture, we load the native entry point for this app.
       DefaultNewArchitectureEntryPoint.load();
     }
     ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
