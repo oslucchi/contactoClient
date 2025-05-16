@@ -80,13 +80,17 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.contactoclient"
+    namespace "it.l_soft.contactoclient"
     defaultConfig {
-        applicationId "com.contactoclient"
+        applicationId "it.l_soft.contactoclient"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+ 	manifestPlaceholders = [
+            speechRecognitionPermission: "android.permission.RECORD_AUDIO",
+            isSpeechRecognitionPresent: "true"  // Note: String value, not boolean
+        ]
     }
     signingConfigs {
         debug {

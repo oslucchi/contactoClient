@@ -44,6 +44,13 @@ public class MainApplication extends Application implements ReactApplication {
         }
       };
 
+   @Override
+   protected ReactNativeHost createReactNativeHost() {
+     return new DefaultReactNativeHost(this) { // Changed from ReactNativeHost
+       // ... existing config
+     };
+   }
+
   @Override
   public ReactNativeHost getReactNativeHost() {
     return mReactNativeHost;
