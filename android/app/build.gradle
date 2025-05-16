@@ -1,9 +1,9 @@
 def enableNewArchitecture = project.hasProperty("newArchEnabled") ? project.newArchEnabled.toBoolean() : false
 def enableHermes = project.hasProperty("hermesEnabled") ? project.hermesEnabled.toBoolean() : true
 
+apply plugin: "com.facebook.react"
 apply plugin: "kotlin-android"
 apply plugin: "com.android.application"
-apply plugin: "com.facebook.react"
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 
 
@@ -83,9 +83,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "it.l_soft.contactoclient"
+    namespace "com.contactoclient"
     defaultConfig {
-        applicationId "it.l_soft.contactoclient"
+        applicationId "com.contactoclient"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -94,10 +94,11 @@ android {
             speechRecognitionPermission: "android.permission.RECORD_AUDIO",
             isSpeechRecognitionPresent: "true"  // Note: String value, not boolean
         ]
-        buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", "$enableNewArchitecture")
-        buildConfigField("boolean", "IS_HERMES_ENABLED", "$enableHermes")
         // Add this if missing:
         missingDimensionStrategy "react-native-camera", "general"
+        buildConfigField("boolean", "DEBUG", "true")
+        buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", "false")
+        buildConfigField("boolean", "IS_HERMES_ENABLED", "true")
     }
     signingConfigs {
         debug {
@@ -124,6 +125,8 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+    implementation project(':react-native-voice')
+    implementation "com.facebook.react:react-native:+"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {

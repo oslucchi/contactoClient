@@ -7,7 +7,12 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
+import java.util.Arrays;
 import java.util.List;
+
+// Add these imports for your packages
+import com.facebook.react.shell.MainReactPackage;
+import com.rnvoice.RNVoicePackage;
 
 public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost =
@@ -19,9 +24,11 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected List<ReactPackage> getPackages() {
-          @SuppressWarnings("UnnecessaryLocalVariable")
-          List<ReactPackage> packages = new PackageList(this).getPackages();
-          return packages;
+          return Arrays.<ReactPackage>asList(
+              new MainReactPackage(),
+              new RNVoicePackage()
+              // Add other packages here
+          );
         }
 
         @Override
