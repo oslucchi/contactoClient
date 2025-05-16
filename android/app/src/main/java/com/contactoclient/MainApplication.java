@@ -12,7 +12,8 @@ import java.util.List;
 
 // Add these imports for your packages
 import com.facebook.react.shell.MainReactPackage;
-import com.rnvoice.RNVoicePackage;
+// import com.rnvoice.RNVoicePackage;
+import com.wenkesj.voice.VoicePackage;
 
 public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost =
@@ -23,6 +24,7 @@ public class MainApplication extends Application implements ReactApplication {
         }
 
         @Override
+/*
         protected List<ReactPackage> getPackages() {
           return Arrays.<ReactPackage>asList(
               new MainReactPackage(),
@@ -30,6 +32,13 @@ public class MainApplication extends Application implements ReactApplication {
               // Add other packages here
           );
         }
+*/
+	protected List<ReactPackage> getPackages() {
+	    return Arrays.<ReactPackage>asList(
+		new MainReactPackage(),
+		new com.wenkesj.voice.VoicePackage() // Fully qualified name
+	    );
+	}
 
         @Override
         protected String getJSMainModuleName() {
