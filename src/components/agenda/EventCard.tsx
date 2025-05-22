@@ -1,15 +1,24 @@
 import React from 'react';
-import { Events } from '../../modules/Events';
+import {
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import dayjs from 'dayjs';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import * as icons from '../../../assets/icons/index';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import * as icons from '../../../assets/icons/index';
+import { Events } from '../../modules/Events';
 import { AppStackParamList } from '../../navigation/types';
 import styles from '../../styles/Application.styles';
 
-type NavigationProp = NativeStackNavigationProp<AppStackParamList, 'EventActionHandler'>;
+type NavigationProp = NativeStackNavigationProp<
+  AppStackParamList,
+  'EventActionHandler'
+>;
 
 type Props = {
   event: Events;
@@ -18,37 +27,33 @@ type Props = {
 const EventCard: React.FC<Props> = ({ event }) => {
   const navigation = useNavigation<NavigationProp>();
 
-  console.log('EventCard');
-
-  let invitees = '';
-  let separator = '';
-
-  event?.participants?.forEach(participant => {
-    invitees += separator + participant.familyName;
-    separator = ', ';
-  });
-
-  let iconName = icons.default.iconaBianca;
-  switch (event?.iconName) {
-    case 'phoneCall':
-      iconName = icons.default.phoneCall;
-      break;
-    case 'videoCall':
-      iconName = icons.default.videoCall;
-      break;
-    case 'meetInPerson':
-      iconName = icons.default.meetInPerson;
-      break;
-  }
-
   const handlePress = (): void => {
-    console.log('Calling EventActionHandler passing event with id ', event?.idEvent);
+    console.log('Navigating to EventActionHandler with event ID', event?.idEvent);
     navigation.navigate('EventActionHandler', { event });
   };
 
+  // Format participants
+  const invitees = event?.participants
+    ?.map(p => p.familyName)
+    .join(', ') || '';
+
+  // Select icon
+  const iconName = (() => {
+    switch (event?.iconName) {
+      case 'phoneCall':
+        return icons.default.phoneCall;
+      case 'videoCall':
+        return icons.default.videoCall;
+      case 'meetInPerson':
+        return icons.default.meetInPerson;
+      default:
+        return icons.default.iconaBianca;
+    }
+  })();
+
   return (
-    <TouchableOpacity 
-      style={styles.cardContainer} 
+    <TouchableOpacity
+      style={styles.cardContainer}
       onPress={handlePress}
       activeOpacity={0.7}
     >
@@ -57,19 +62,20 @@ const EventCard: React.FC<Props> = ({ event }) => {
           <Text numberOfLines={1} style={styles.dateAndTopic}>
             {dayjs(event?.date).format('MM/DD')} - {event?.description}
           </Text>
+
           <Text numberOfLines={1} style={styles.timeAndCompany}>
             {dayjs(event?.date).format('HH:mm')} -{' '}
             {dayjs(event?.date).add(event?.duration, 'minute').format('HH:mm')}  
             {event?.company}
           </Text>
-          {event.participants ? (
+
+          {invitees !== '' && (
             <Text numberOfLines={1} style={styles.participants}>
               {invitees}
             </Text>
-          ) : (
-            <Text numberOfLines={1} />
           )}
         </View>
+
         <View style={styles.imgContainer}>
           <Image source={iconName} style={styles.icon} />
         </View>

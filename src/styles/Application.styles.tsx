@@ -108,7 +108,107 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
   },
+
+  reportHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+    gap: 8,
+  },
+
+  reportTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+
+  reportHeaderControls: {
+    flexDirection: 'row',
+    marginLeft: 'auto',
+    alignItems: 'center',
+    gap: 8,
+  },
+
+  reportControlButtonText: {
+    fontSize: 20,
+    marginHorizontal: 5,
+  },
+  reportItemContainer: {
+    backgroundColor: '#FFFFFF',
+    padding: 12,
+    marginBottom: 10,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+
+  reportDate: {
+    fontSize: 14,
+    fontStyle: 'italic',
+    color: '#555',
+    marginBottom: 4,
+  },
+
+  reportSummary: {
+    fontSize: 12,
+    color: '#666',
+  },
+
+  reportFullText: {
+    fontSize: 14,
+    color: '#111',
+  },
   
+  reportDetailsHeader: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+  },
+
+  reportDetailsHeaderText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#111',
+  },
+
+  reportDetailsBody: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 20,
+  },
+
+  reportDetailsDate: {
+    fontSize: 14,
+    fontStyle: 'italic',
+    color: '#666',
+    marginBottom: 12,
+  },
+
+  reportDetailsContent: {
+    fontSize: 16,
+    color: '#111',
+  },
+
+  footerButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 60,
+    backgroundColor: 'white',
+    borderTopWidth: 1,
+    borderColor: '#ccc',
+  },
+
+  footerButtonText: {
+    color: '#312651',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+
 });
 
 
