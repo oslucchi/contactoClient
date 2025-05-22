@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  SafeAreaView,
   TextInput,
   TouchableOpacity,
   Image,
@@ -13,6 +12,7 @@ import styles from '../../styles/Application.styles';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../../navigation/types';
+import BaseScreen from '../BaseScreen';
 
 type NavigationProp = NativeStackNavigationProp<AppStackParamList, 'ReportAddItem'>;
 
@@ -23,33 +23,6 @@ const ReportAddItem = () => {
   const [recordingResult, setRecordingResult] = useState('');
   const [partialText, setPartialText] = useState('');
   const [editable, setEditable] = useState(false);
-
-  const speechStartHandler = () => console.log('Started recording');
-  const speechEndHandler = () => {
-    console.log('Ended recording');
-    setRecording(false);
-    if (partialText.trim().length > 0) {
-      setRecordingResult(prev => prev + (prev ? '\n' : '') + partialText);
-      setPartialText('');
-    }
-  };
-  const speechErrorHandler = (e: any) => {
-    console.log('Recording error ', e);
-    setRecording(false);
-  };
-  const speechResultsHandler = (e: SpeechResultsEvent) => {
-    const newText = e?.value?.[0];
-    if (newText) {
-      setRecordingResult(prev => prev + (prev ? '\n' : '') + newText);
-      setPartialText('');
-    }
-  };
-  const speechPartialResultsHandler = (e: SpeechResultsEvent) => {
-    const newText = e?.value?.[0];
-    if (newText) {
-      setPartialText(newText);
-    }
-  };
 
   useEffect(() => {
     const requestPermission = async () => {
@@ -73,11 +46,30 @@ const ReportAddItem = () => {
   }, []);
 
   useEffect(() => {
-    Voice.onSpeechStart = speechStartHandler;
-    Voice.onSpeechEnd = speechEndHandler;
-    Voice.onSpeechResults = speechResultsHandler;
-    Voice.onSpeechPartialResults = speechPartialResultsHandler;
-    Voice.onSpeechError = speechErrorHandler;
+    Voice.onSpeechStart = () => console.log('Started recording');
+    Voice.onSpeechEnd = () => {
+      console.log('Ended recording');
+      setRecording(false);
+      if (partialText.trim().length > 0) {
+        setRecordingResult(prev => prev + (prev ? '\n' : '') + partialText);
+        setPartialText('');
+      }
+    };
+    Voice.onSpeechError = (e: any) => {
+      console.log('Recording error ', e);
+      setRecording(false);
+    };
+    Voice.onSpeechResults = (e: SpeechResultsEvent) => {
+      const newText = e?.value?.[0];
+      if (newText) {
+        setRecordingResult(prev => prev + (prev ? '\n' : '') + newText);
+        setPartialText('');
+      }
+    };
+    Voice.onSpeechPartialResults = (e: SpeechResultsEvent) => {
+      const newText = e?.value?.[0];
+      if (newText) setPartialText(newText);
+    };
 
     return () => {
       Voice.destroy().then(Voice.removeAllListeners);
@@ -122,90 +114,88 @@ const ReportAddItem = () => {
     setPartialText('');
   };
 
-  const toggleEditable = () => {
-    setEditable(prev => !prev);
-  };
+  const toggleEditable = () => setEditable(prev => !prev);
 
-  return (
-    <SafeAreaView style={styles.mainContainer}>
-      <View style={[styles.bodyContainer, { paddingBottom: 60 }]}>
-        <TextInput
-          style={styles.textInput}
-          value={recordingResult + (partialText ? ('\n' + partialText) : '')}
-          multiline
-          placeholder="Press the recording button and start speaking..."
-          editable={editable}
-          onChangeText={(text) => {
-            if (editable) {
-              setRecordingResult(text);
-              setPartialText('');
-            }
-          }}
-        />
-      </View>
-
-      <View style={styles.featureIconsArea}>
-        <TouchableOpacity onPress={recording ? stopSpeechToText : startSpeechToText}>
-          <Image
-            style={styles.icon}
-            source={
-              recording
-                ? require('../../../assets/images/voiceLoading.gif')
-                : require('../../../assets/images/startRecording.png')
-            }
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={handleSave}
-          disabled={recordingResult.trim().length === 0}
-        >
-          <Image
-            style={styles.icon}
-            source={
-              recordingResult.trim().length === 0
-                ? require('../../../assets/images/saveIconDisabled.png')
-                : require('../../../assets/images/saveIconActive.png')
-            }
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={handleClear}
-          disabled={recordingResult.trim().length === 0}
-        >
-          <Image
-            style={styles.icon}
-            source={
-              recordingResult.trim().length === 0
-                ? require('../../../assets/images/clearIconDisabled.png')
-                : require('../../../assets/images/clearIcon.png')
-            }
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={toggleEditable}>
-          <Image
-            style={styles.icon}
-            source={
-              editable
-                ? require('../../../assets/images/editIconActive.png')
-                : require('../../../assets/images/editIcon.png')
-            }
-          />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.systemButtonsBand}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            source={require('../../../assets/images/back.png')}
-            style={styles.icon}
-          />
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+  const body = (
+    <TextInput
+      style={[styles.textInput, { paddingBottom: 60 }]}
+      value={recordingResult + (partialText ? '\n' + partialText : '')}
+      multiline
+      placeholder="Press the recording button and start speaking..."
+      editable={editable}
+      onChangeText={text => {
+        if (editable) {
+          setRecordingResult(text);
+          setPartialText('');
+        }
+      }}
+    />
   );
+
+  const featureIcons = (
+    <>
+      <TouchableOpacity onPress={recording ? stopSpeechToText : startSpeechToText}>
+        <Image
+          style={styles.icon}
+          source={
+            recording
+              ? require('../../../assets/images/voiceLoading.gif')
+              : require('../../../assets/images/startRecording.png')
+          }
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={handleSave}
+        disabled={recordingResult.trim().length === 0}
+      >
+        <Image
+          style={styles.icon}
+          source={
+            recordingResult.trim().length === 0
+              ? require('../../../assets/images/saveIconDisabled.png')
+              : require('../../../assets/images/saveIconActive.png')
+          }
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={handleClear}
+        disabled={recordingResult.trim().length === 0}
+      >
+        <Image
+          style={styles.icon}
+          source={
+            recordingResult.trim().length === 0
+              ? require('../../../assets/images/clearIconDisabled.png')
+              : require('../../../assets/images/clearIcon.png')
+          }
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={toggleEditable}>
+        <Image
+          style={styles.icon}
+          source={
+            editable
+              ? require('../../../assets/images/editIconActive.png')
+              : require('../../../assets/images/editIcon.png')
+          }
+        />
+      </TouchableOpacity>
+    </>
+  );
+
+  const footer = (
+    <TouchableOpacity onPress={() => navigation.goBack()}>
+      <Image
+        source={require('../../../assets/images/back.png')}
+        style={styles.icon}
+      />
+    </TouchableOpacity>
+  );
+
+  return <BaseScreen body={body} featureIcons={featureIcons} footer={footer} />;
 };
 
 export default ReportAddItem;
