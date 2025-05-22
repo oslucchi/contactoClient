@@ -2,6 +2,8 @@ import { Events } from "../modules/Events";
 import { Reports } from "../modules/Reports";
 
 export type AppStackParamList = {
+  Agenda: undefined;
+  
   ReportSection: {
     data: Reports[];
     event: any;

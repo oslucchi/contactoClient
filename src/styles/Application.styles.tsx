@@ -209,6 +209,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
+  footerButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: '100%',
+  },
 });
 
 
