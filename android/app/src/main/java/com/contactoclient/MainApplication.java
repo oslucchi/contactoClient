@@ -2,23 +2,15 @@ package com.contactoclient;
 
 import android.app.Application;
 
-
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.PackageList;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 
-import java.util.Arrays;
 import java.util.List;
-
-// Add these imports for your packages
-import com.facebook.react.shell.MainReactPackage;
-// import com.rnvoice.RNVoicePackage;
-import com.wenkesj.voice.VoicePackage;
-
-import com.swmansion.rnscreens.RNScreensPackage;
 
 public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost =
@@ -30,12 +22,8 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected List<ReactPackage> getPackages() {
-            return Arrays.<ReactPackage>asList(
-              new MainReactPackage(),
-              new RNScreensPackage(),
-              new com.wenkesj.voice.VoicePackage() // Fully qualified name
-            );
-	}
+          return new PackageList(this).getPackages(); 
+        }
 
         @Override
         protected String getJSMainModuleName() {
