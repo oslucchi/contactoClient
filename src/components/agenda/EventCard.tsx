@@ -1,77 +1,65 @@
 import React from 'react';
-import {Events} from '../../modules/Events';
+import { Events } from '../../modules/Events';
 
 import dayjs from 'dayjs';
-import styles from './Agenda.style';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import * as icons from '../../../assets/icons/index';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {ParamList} from '../../../App';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AppStackParamList } from '../../navigation/types';
+import styles from '../../styles/Application.styles';
+
+type NavigationProp = NativeStackNavigationProp<AppStackParamList, 'EventActionHandler'>;
 
 type Props = {
   event: Events;
 };
 
-const EventCard: React.FC<Props> = ({event}) => {
-  const navigation = useNavigation<NavigationProp<ParamList>>();
+const EventCard: React.FC<Props> = ({ event }) => {
+  const navigation = useNavigation<NavigationProp>();
 
   console.log('EventCard');
 
-  let invitees: string = '';
-  var separator: string = '';
+  let invitees = '';
+  let separator = '';
 
   event?.participants?.forEach(participant => {
     invitees += separator + participant.familyName;
     separator = ', ';
   });
 
-  var phoneCall = require('../../../assets/icons/phoneCall.png');
-  var videoCall = require('../../../assets/icons/videoCall.png');
-  var meetInPerson = require('../../../assets/icons/meetInPerson.png');
-  var whiteIcon = require('../../../assets/icons/iconaBianca.png');
-
-  var iconName: any = whiteIcon;
-
-  icons.default.phoneCall;
+  let iconName = icons.default.iconaBianca;
   switch (event?.iconName) {
     case 'phoneCall':
-      iconName = phoneCall;
+      iconName = icons.default.phoneCall;
       break;
     case 'videoCall':
-      iconName = videoCall;
+      iconName = icons.default.videoCall;
       break;
     case 'meetInPerson':
-      iconName = meetInPerson;
+      iconName = icons.default.meetInPerson;
       break;
   }
 
-  const handlePress = (event: Events): void => {
-    console.log(
-      'Calling EventActionHandler passing event with id ',
-      event?.idEvent,
-    );
-    navigation.navigate('EventActionHandler', {event});
+  const handlePress = (): void => {
+    console.log('Calling EventActionHandler passing event with id ', event?.idEvent);
+    navigation.navigate('EventActionHandler', { event });
   };
 
-  console.log('event ', event);
-
   return (
-    <TouchableOpacity
-      style={[styles.cardContainer, { flex: 1 }]}
-      onPress={() => handlePress(event)}
+    <TouchableOpacity 
+      style={styles.cardContainer} 
+      onPress={handlePress}
+      activeOpacity={0.7}
     >
-      <View style={[styles.dataContainer, { flex: 1 }, styles.shadowProp]}>
-        <View style={styles.textContainer}>
+      <View style={[styles.cardContent, styles.shadowProp]}>
+        <View style={styles.textBlock}>
           <Text numberOfLines={1} style={styles.dateAndTopic}>
-            {dayjs(event?.date).format('MM/DD')}
-            {' - '}
-            {event?.description}
+            {dayjs(event?.date).format('MM/DD')} - {event?.description}
           </Text>
           <Text numberOfLines={1} style={styles.timeAndCompany}>
-            {dayjs(event?.date).format('HH:mm')}
-            {' - '}
-            {dayjs(event?.date).add(event?.duration, 'minute').format('HH:mm')}
-            {'   '}
+            {dayjs(event?.date).format('HH:mm')} -{' '}
+            {dayjs(event?.date).add(event?.duration, 'minute').format('HH:mm')}  
             {event?.company}
           </Text>
           {event.participants ? (
@@ -83,7 +71,7 @@ const EventCard: React.FC<Props> = ({event}) => {
           )}
         </View>
         <View style={styles.imgContainer}>
-          <Image source={iconName} style={styles.imgLogo} />
+          <Image source={iconName} style={styles.icon} />
         </View>
       </View>
     </TouchableOpacity>

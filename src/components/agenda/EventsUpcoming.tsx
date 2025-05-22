@@ -1,16 +1,20 @@
 import React from 'react';
 import EventCard from './EventCard';
 import FetchData from '../../services/FetchData';
-import {ActivityIndicator, ScrollView, Text, View} from 'react-native';
-import {Events} from '../../modules/Events';
-import styles from './Agenda.style';
+import {
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  View,
+  SafeAreaView,
+} from 'react-native';
+import { Events } from '../../modules/Events';
+import styles from '../../styles/Application.styles';
 
-type Props = {};
-
-const EventsUpcoming: React.FC<Props> = () => {
+const EventsUpcoming: React.FC = () => {
   console.log('EventsUpcoming');
 
-  const {data, isLoading, error} = FetchData(
+  const { data, isLoading, error } = FetchData(
     'post',
     'restcall/agenda/schedule',
     {
@@ -20,24 +24,36 @@ const EventsUpcoming: React.FC<Props> = () => {
   );
 
   return (
-    <View style={styles.scheduleContainer}>
-      {isLoading ? (
-        <ActivityIndicator size="large" color="#312651" />
-      ) : error ? (
-        <Text>Something went wrong</Text>
-      ) : (
-        <ScrollView
-          style={styles.upcomingCardsContainer}
-          contentContainerStyle={{ alignItems: 'stretch' }}
-        >
-          {
-            data?.map((event: Events) => (
+    <View style={styles.mainContainer}>
+      <View style={styles.headerArea}>
+        <Text> Optional Title</Text>
+      </View>
+
+      <View style={styles.bodyContainer}>
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#312651" />
+        ) : error ? (
+          <Text>Something went wrong</Text>
+        ) : (
+          <ScrollView
+            contentContainerStyle={{ paddingVertical: 12, paddingBottom: 20 }}
+          >
+            {data?.map((event: Events) => (
               <EventCard key={event?.idEvent} event={event} />
-            ))
-          }
-        </ScrollView>
-      )}
+            ))}
+          </ScrollView>
+        )}
+      </View>
+
+      <View style={styles.featureIconsArea}>
+        {<Text> Room for Icons </Text>}
+      </View>
+
+      <View style={styles.systemButtonsBand}>
+        {<Text> Optional Footre </Text>}
+      </View>
     </View>
   );
 };
+
 export default EventsUpcoming;

@@ -1,4 +1,4 @@
-import React from 'react';
+import { enableScreens } from 'react-native-screens';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
@@ -9,7 +9,9 @@ import ReportAddItem from './src/components/repo/ReportAddItem';
 import {Events} from './src/modules/Events';
 import ReportDetails from './src/components/repo/ReportDetails';
 import { Reports } from './src/modules/Reports';
+import ReportSection from './src/components/repo/ReportSection';
 
+enableScreens();
 const Stack = createStackNavigator();
 
 const contactoTheme = {
@@ -54,13 +56,18 @@ export default function App() {
             headerTitle: () => <TitleBar functionName={'Azioni'} />,
           }}
         />
-      <Stack.Screen
-        name="ReportDetails"
-        component={ReportDetails}
-        options={{
-          headerTitle: () => <TitleBar functionName={"Report Details"} />,
-        }}
-      />
+        <Stack.Screen
+          name="ReportDetails"
+          component={ReportDetails}
+          options={{
+            headerTitle: () => <TitleBar functionName={"Report Details"} />,
+          }}
+        />
+        <Stack.Screen
+          name="ReportSection"
+          component={ReportSection}
+          options={{headerTitle: () => <TitleBar functionName={'Reports'} />}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

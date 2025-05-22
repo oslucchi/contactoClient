@@ -13,28 +13,25 @@ type Props = {
 };
 
 const ReportItem: React.FC<Props> = ({ report, showTagsOnly, fontSize }) => {
-  console.log('ReportItem');
-  const [showTagOnly, setShowTagOnly] = useState(report.showTagOnly)
+  const [showTagOnly, setShowTagOnly] = useState(report.showTagOnly);
 
-  const toggleShowTagOnly= () => {
-    console.log('showTagOnly for object was ' + report.showTagOnly); 
+  const toggleShowTagOnly = () => {
     report.showTagOnly = !report.showTagOnly;
     setShowTagOnly(report.showTagOnly);
-  }
+  };
 
   return (
     <TouchableOpacity onPress={toggleShowTagOnly}>
-    <View style={[styles.reportItem, {paddingBottom: 25}]} >
-      <Text style={{ fontStyle: 'italic', fontSize: 18 }}>
-        {dayjs(report?.date).format('YYYY/MM/DD')} {' - '}
-        {report.reporter}
-      </Text>
-      {report.showTagOnly ? (
-        <Text style={{ fontSize: 12 }}>{report?.summary}</Text>
-      ) : (
-        <Text style={{ fontSize, color: '#111111' }}>{report?.report}</Text>
-      )}
-    </View>
+      <View style={[styles.reportItemContainer, { paddingBottom: 25 }]}>
+        <Text style={[styles.dateText, { fontStyle: 'italic', fontSize: 18 }]}>  
+          {dayjs(report?.date).format('YYYY/MM/DD')} {' - '} {report.reporter}
+        </Text>
+        {showTagOnly ? (
+          <Text style={[styles.description, { fontSize: 12 }]}>{report?.summary}</Text>
+        ) : (
+          <Text style={{ fontSize, color: '#111111' }}>{report?.report}</Text>
+        )}
+      </View>
     </TouchableOpacity>
   );
 };

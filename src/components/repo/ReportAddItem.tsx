@@ -5,20 +5,26 @@ import {
   TouchableOpacity,
   Image,
   View,
-  StyleSheet,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import Voice, { SpeechResultsEvent } from '@react-native-voice/voice';
+import styles from '../../styles/Application.styles';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AppStackParamList } from '../../navigation/types';
+
+type NavigationProp = NativeStackNavigationProp<AppStackParamList, 'ReportAddItem'>;
 
 const ReportAddItem = () => {
+  const navigation = useNavigation<NavigationProp>();
+
   const [recording, setRecording] = useState(false);
   const [recordingResult, setRecordingResult] = useState('');
   const [partialText, setPartialText] = useState('');
   const [editable, setEditable] = useState(false);
 
-  const speechStartHandler = () => {
-    console.log('Started recording');
-  };
-
+  const speechStartHandler = () => console.log('Started recording');
   const speechEndHandler = () => {
     console.log('Ended recording');
     setRecording(false);
@@ -27,12 +33,10 @@ const ReportAddItem = () => {
       setPartialText('');
     }
   };
-
   const speechErrorHandler = (e: any) => {
     console.log('Recording error ', e);
     setRecording(false);
   };
-
   const speechResultsHandler = (e: SpeechResultsEvent) => {
     const newText = e?.value?.[0];
     if (newText) {
@@ -40,13 +44,33 @@ const ReportAddItem = () => {
       setPartialText('');
     }
   };
-
   const speechPartialResultsHandler = (e: SpeechResultsEvent) => {
     const newText = e?.value?.[0];
     if (newText) {
       setPartialText(newText);
     }
   };
+
+  useEffect(() => {
+    const requestPermission = async () => {
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+          {
+            title: 'Microphone Permission',
+            message: 'This app needs access to your microphone to record speech.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          }
+        );
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Microphone permission denied');
+        }
+      }
+    };
+    requestPermission();
+  }, []);
 
   useEffect(() => {
     Voice.onSpeechStart = speechStartHandler;
@@ -103,13 +127,13 @@ const ReportAddItem = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.inputContainer}>
+    <SafeAreaView style={styles.mainContainer}>
+      <View style={[styles.bodyContainer, { paddingBottom: 60 }]}>
         <TextInput
           style={styles.textInput}
           value={recordingResult + (partialText ? ('\n' + partialText) : '')}
           multiline
-          placeholder="Start speaking..."
+          placeholder="Press the recording button and start speaking..."
           editable={editable}
           onChangeText={(text) => {
             if (editable) {
@@ -120,7 +144,7 @@ const ReportAddItem = () => {
         />
       </View>
 
-      <View style={styles.iconsContainer}>
+      <View style={styles.featureIconsArea}>
         <TouchableOpacity onPress={recording ? stopSpeechToText : startSpeechToText}>
           <Image
             style={styles.icon}
@@ -172,50 +196,16 @@ const ReportAddItem = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.bottomBand} />
+      <View style={styles.systemButtonsBand}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            source={require('../../../assets/images/back.png')}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#DCF8C6',
-  },
-  inputContainer: {
-    flex: 1,
-    padding: 3,
-    paddingBottom: 60,
-  },
-  textInput: {
-    flex: 1,
-    textAlignVertical: 'top',
-    fontSize: 16,
-    backgroundColor: '#DCF8C6',
-    color: '#111111',
-  },
-  iconsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: 60,
-    backgroundColor: '#DCF8C6',
-    paddingHorizontal: 10,
-  },
-  bottomBand: {
-    height: 40,
-    backgroundColor: 'white',
-    borderTopWidth: 1,
-    borderColor: '#ccc',
-  },
-  icon: {
-    width: 50,
-    height: 50,
-    resizeMode: 'contain',
-  },
-  disabledIcon: {
-    opacity: 0.3,
-  },
-});
 
 export default ReportAddItem;
