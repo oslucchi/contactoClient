@@ -1,5 +1,3 @@
-import 'react-native-gesture-handler';
-import React from 'react';
 import { enableScreens } from 'react-native-screens';
 
 import {createStackNavigator} from '@react-navigation/stack';
