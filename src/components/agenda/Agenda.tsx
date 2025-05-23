@@ -9,6 +9,8 @@ const Agenda: React.FC = () => {
       body={<EventsUpcoming />}
       featureIcons={null}
       footer={null}
+      showBackButton={false}
+      showHomeButton={false}
     />
   );
 };

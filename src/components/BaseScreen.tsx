@@ -20,6 +20,7 @@ type Props = {
   bodyStyle?: StyleProp<ViewStyle>;
   showBackButton?: boolean;
   showHomeButton?: boolean;
+  showRefreshButton?: boolean;
 };
 
 const BaseScreen: React.FC<Props> = ({
@@ -30,6 +31,7 @@ const BaseScreen: React.FC<Props> = ({
   bodyStyle,
   showBackButton = true,
   showHomeButton = true,
+  showRefreshButton = true,
 }) => {
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
 
@@ -40,6 +42,11 @@ const BaseScreen: React.FC<Props> = ({
   const handleGoHome = () => {
     navigation.navigate('Agenda');
   };
+
+  const handleRefresh = () => {
+    navigation.navigate('Agenda');
+  };
+
 
   const renderDefaultFooter = () => (
     <View style={styles.footerButtons}>
@@ -55,6 +62,14 @@ const BaseScreen: React.FC<Props> = ({
         <TouchableOpacity onPress={handleGoHome}>
           <Image
             source={require('../../assets/images/home.png')}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      )}
+      {showRefreshButton && (
+        <TouchableOpacity onPress={handleRefresh}>
+          <Image
+            source={require('../../assets/images/refresh.png')}
             style={styles.icon}
           />
         </TouchableOpacity>
